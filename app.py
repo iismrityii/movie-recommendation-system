@@ -38,19 +38,13 @@ def load_similarity():
 
 
 def get_api_key() -> str:
-    if load_dotenv is not None:
-        load_dotenv()
-    else:
-        # Fallback parser so the app still works without python-dotenv.
-        env_path = Path(".env")
-        if env_path.exists():
-            for line in env_path.read_text(encoding="utf-8").splitlines():
-                line = line.strip()
-                if not line or line.startswith("#") or "=" not in line:
-                    continue
-                key, value = line.split("=", 1)
-                os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
-    return os.getenv("TMDB_API_KEY", "")
+    try:
+        return st.secrets["TMDB_API_KEY"]
+    except Exception:
+        if load_dotenv is not None:
+            load_dotenv()
+
+        return os.getenv("TMDB_API_KEY", "")
 
 
 def fetch_poster(movie_id: int, api_key: str) -> str:
