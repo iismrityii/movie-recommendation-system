@@ -80,23 +80,19 @@ def fetch_poster(movie_id: int, api_key: str) -> str:
     try:
         response = requests.get(url, params=params, timeout=15)
 
-        st.write(f"Movie ID: {movie_id}")
-        st.write(f"Status Code: {response.status_code}")
-
         if response.status_code == 200:
             data = response.json()
 
             poster_path = data.get("poster_path")
-            st.write("Poster Path:", poster_path)
 
             if poster_path:
                 return f"{TMDB_IMAGE_BASE_URL}{poster_path}"
 
         else:
-            st.write(response.text)
+            pass
 
     except Exception as e:
-        st.error(f"Error: {e}")
+        print(f"Poster fetch error: {e}")
 
     return FALLBACK_POSTER
 
@@ -422,15 +418,11 @@ def show_recommender(movies: pd.DataFrame, similarity, api_key: str):
             cols = st.columns(5)
             for idx, col in enumerate(cols):
                 with col:
+                    st.image(posters[idx], use_container_width=True)
                     st.markdown(
-                        f'''
-                        <div class="movie-card">
-                            <img src="{posters[idx]}" style="width:100%; display:block;">
-                            <div class='movie-title'>{names[idx]}</div>
-                        </div>
-                        ''',
+                        f"<div class='movie-title'>{names[idx]}</div>",
                         unsafe_allow_html=True,
-                    )
+            )
 
             st.success("🎉 Recommendations loaded! Enjoy!!")
 
