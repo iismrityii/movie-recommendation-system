@@ -17,14 +17,14 @@ except ModuleNotFoundError:
 # PREMIUM CINEMATIC CONFIGURATION
 # ============================================================================
 PREMIUM_COLORS = {
-    "dark_bg": "#060b19",          # Deep navy blue
-    "card_bg": "rgba(20, 28, 47, 0.4)", # Glassmorphism base
-    "secondary_bg": "#0a1128",     # Slightly lighter navy
-    "primary_accent": "#00d2ff",   # Electric blue
-    "accent_purple": "#7a00ff",    # Purple highlight
-    "text_primary": "#ffffff",
-    "text_secondary": "#a0aec0",
-    "gold": "#ffd700",
+    "dark_bg": "#030b14",          # Deep midnight blue
+    "card_bg": "rgba(10, 20, 35, 0.4)", # Glassmorphism base
+    "secondary_bg": "#060f1c",     # Slightly lighter
+    "primary_accent": "#d4af37",   # Soft gold
+    "accent_purple": "#c5a017",    # Darker gold for gradients
+    "text_primary": "#fdfdfd",
+    "text_secondary": "#b0c4de",
+    "gold": "#d4af37",
 }
 
 TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
@@ -122,16 +122,45 @@ def apply_premium_theme():
     st.markdown(
         f"""
         <style>
-        /* Main Background */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Inter:wght@300;400;600&display=swap');
+
+        /* Main Background with film grain */
         .stApp {{
             background-color: {PREMIUM_COLORS['dark_bg']};
+            background-image: 
+                linear-gradient(rgba(3, 11, 20, 0.85), rgba(3, 11, 20, 0.92)),
+                url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1920&q=20');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            filter: none;
             color: {PREMIUM_COLORS['text_primary']};
+            font-family: 'Inter', sans-serif;
+        }}
+
+        .stApp::before {{
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 128px 128px;
         }}
         
+        h1, h2, h3, h4, h5, h6 {{ 
+            font-family: 'Playfair Display', serif;
+            color: {PREMIUM_COLORS['text_primary']}; 
+            font-weight: 400;
+        }}
+
         /* Sidebar Styling */
         [data-testid="stSidebar"] {{
             background-color: {PREMIUM_COLORS['secondary_bg']};
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(212, 175, 55, 0.1);
         }}
         
         [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {{
@@ -140,105 +169,103 @@ def apply_premium_theme():
         
         /* Main Content Area */
         [data-testid="stMainBlockContainer"] {{
-            background-color: {PREMIUM_COLORS['dark_bg']};
+        background-color: transparent;
         }}
         
         /* Text Elements */
         body {{ color: {PREMIUM_COLORS['text_primary']}; }}
         p {{ color: {PREMIUM_COLORS['text_secondary']}; }}
-        h1, h2, h3, h4, h5, h6 {{ color: {PREMIUM_COLORS['text_primary']}; }}
         
         /* Hero Section */
         .hero {{
-            background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(122, 0, 255, 0.1));
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(3, 11, 20, 0.8), rgba(212, 175, 55, 0.05));
             border-radius: 16px;
-            padding: 56px 32px;
+            padding: 80px 32px;
             color: {PREMIUM_COLORS['text_primary']};
             margin-bottom: 32px;
-            border: 1px solid rgba(0, 210, 255, 0.2);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
             text-align: center;
         }}
         .hero h1 {{
             margin: 0;
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: -webkit-linear-gradient(45deg, {PREMIUM_COLORS['primary_accent']}, #ffffff);
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: -webkit-linear-gradient(45deg, {PREMIUM_COLORS['primary_accent']}, #fdfdfd);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }}
         .hero p {{
             margin-top: 16px;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
+            font-style: italic;
+            font-family: 'Playfair Display', serif;
             color: {PREMIUM_COLORS['text_secondary']};
         }}
         
-        /* Containers & Cards (Glassmorphism) */
-        .featured-container, .how-it-works, .stat-card {{
+        /* Mood Cards */
+        .mood-grid {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }}
+        .mood-card {{
             background: {PREMIUM_COLORS['card_bg']};
-            backdrop-filter: blur(8px);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }}
-        .featured-container h2, .how-it-works h2 {{
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 20px 32px;
+            font-size: 1.1rem;
+            font-family: 'Playfair Display', serif;
             color: {PREMIUM_COLORS['primary_accent']};
-            margin-bottom: 24px;
-            font-size: 1.8rem;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
         }}
-        
-        /* Stat Card specifics */
-        .stat-card {{
+        .mood-card:hover {{
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+        }}
+
+        /* Philosophy Section */
+        .philosophy-section {{
             text-align: center;
-            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            padding: 40px;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
         }}
-        .stat-card h3 {{
-            margin: 0; font-size: 2rem; color: {PREMIUM_COLORS['primary_accent']};
+        .philosophy-section p {{
+            font-size: 1.25rem;
+            line-height: 1.8;
+            font-family: 'Playfair Display', serif;
+            color: {PREMIUM_COLORS['text_secondary']};
         }}
-        .stat-card p {{
-            margin: 8px 0 0 0; color: {PREMIUM_COLORS['text_secondary']};
-        }}
-        
-        /* Steps */
-        .step {{
-            display: flex; align-items: center; margin-bottom: 24px;
-        }}
-        .step-number {{
-            background: linear-gradient(135deg, {PREMIUM_COLORS['primary_accent']}, {PREMIUM_COLORS['accent_purple']});
-            color: white; width: 50px; height: 50px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 1.5rem; margin-right: 20px; flex-shrink: 0;
-        }}
-        .step-content h3 {{ margin: 0 0 8px 0; }}
-        .step-content p {{ margin: 0; }}
-        
+
         /* Movie Card */
         .movie-card {{
             background: {PREMIUM_COLORS['card_bg']};
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.1);
             border-radius: 12px;
             overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
             text-align: center;
         }}
         .movie-card:hover {{
             transform: translateY(-8px);
-            box-shadow: 0 12px 32px rgba(0, 210, 255, 0.2);
-            border: 1px solid rgba(0, 210, 255, 0.5);
-        }}
-        .movie-card img {{
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.4);
         }}
         .movie-title {{
-            font-weight: 600;
+            font-weight: 300;
+            font-family: 'Playfair Display', serif;
             color: {PREMIUM_COLORS['text_primary']};
             padding: 12px 8px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             min-height: 56px;
             display: flex;
             align-items: center;
@@ -247,20 +274,53 @@ def apply_premium_theme():
         
         /* Button Styling */
         .stButton > button {{
-            background: linear-gradient(135deg, {PREMIUM_COLORS['primary_accent']}, {PREMIUM_COLORS['accent_purple']});
-            color: white; border: none; border-radius: 8px; padding: 12px 32px;
-            font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease;
+            background: transparent;
+            color: {PREMIUM_COLORS['primary_accent']}; 
+            border: 1px solid {PREMIUM_COLORS['primary_accent']}; 
+            border-radius: 4px; 
+            padding: 12px 40px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300; 
+            font-size: 1.1rem; 
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
         }}
         .stButton > button:hover {{
+            background: rgba(212, 175, 55, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 210, 255, 0.4);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+            color: #fff;
+            border: 1px solid #fff;
         }}
         
         /* Select Box */
         .stSelectbox > div > div {{
             background: {PREMIUM_COLORS['card_bg']};
-            border-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(212, 175, 55, 0.2);
             color: {PREMIUM_COLORS['text_primary']};
+        }}
+
+        /* Sidebar nav buttons */
+        [data-testid="stSidebar"] .stButton > button {{
+            background: transparent;
+            border: none;
+            color: #b0c4de;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-align: left;
+            padding: 8px 0;
+            border-radius: 0;
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+        }}
+        [data-testid="stSidebar"] .stButton > button:hover {{
+            color: #d4af37;
+            border-left: 2px solid #d4af37;
+            background: transparent;
+            transform: none;
+            box-shadow: none;
+            padding-left: 8px;
         }}
         </style>
         """,
@@ -272,117 +332,110 @@ def apply_premium_theme():
 # ============================================================================
 # HELPER COMPONENTS
 # ============================================================================
-def render_featured_movie(movies: pd.DataFrame, api_key: str):
-    """Render featured movie section"""
-    featured = movies.sample(n=1).iloc[0]
-    movie_id = int(featured.movie_id)
-    poster = fetch_poster(movie_id, api_key)
-
-    col1, col2 = st.columns([1, 1.5])
-    with col1:
-        st.image(poster, use_container_width=True)
-
-    with col2:
-        st.markdown(f"### 🌟 Featured Movie")
-        st.markdown(f"## {featured.title}")
-        st.markdown(
-            f"**Genres:** {featured.get('genres', 'N/A')} | **Rating:** ⭐ {featured.get('vote_average', 'N/A')}/10"
-        )
-
-
-def render_how_it_works():
-    """Render how it works section"""
+def render_philosophy():
     st.markdown(
-        """
-        <div class="how-it-works">
-            <h2>🎬 How It Works</h2>
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Choose Your Favorite</h3>
-                    <p>Select any movie from our database of thousands of titles.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>AI Analysis</h3>
-                    <p>Our advanced ML algorithm analyzes movie features and similarities.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Get Recommendations</h3>
-                    <p>Discover 5 perfectly matched movies tailored to your taste.</p>
-                </div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
+    """
+    <div class="philosophy-section">
+        <p>People do not always choose movies based on genres.<br><br>
+        They seek <span style="color: #d4af37;">a feeling</span> — comfort, wonder, escape,<br>reflection, or an emotional connection.</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+    
 
 # ============================================================================
 # PAGE FUNCTIONS
 # ============================================================================
 def show_home(movies: pd.DataFrame, api_key: str):
-    """Home page with featured movie and call to action"""
+    """Home page with hero, moods, philosophy, and call to action"""
     st.markdown(
-        """
-        <div class="hero">
-            <h1>🎬 Movie Recommender</h1>
-            <p>Discover your next favorite movie with AI-powered recommendations</p>
+    """
+    <div class="hero" style="
+        position: relative;
+        overflow: hidden;
+    ">
+        <div style="
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 900px; height: 500px;
+            background: radial-gradient(ellipse at center, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.08) 40%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        "></div>
+        <div style="position: relative; z-index: 1;">
+            <p style="letter-spacing: 4px; font-size: 0.85rem; color: #b0c4de; font-family: Inter, sans-serif; margin-bottom: 12px;">A CINEMATIC EXPERIENCE</p>
+            <h1 style="font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 5rem; letter-spacing: 4px;">Musefall</h1>
+            <p style="letter-spacing: 3px; font-size: 0.8rem; color: #b0c4de; font-family: Inter, sans-serif; margin: 8px 0 4px;">MOVIE RECOMMENDER</p>
+            <div style="width: 200px; height: 1px; background: rgba(212,175,55,0.3); margin: 12px auto;"></div>
+            <p>"Fall into the story you need."</p>
+            <div style="display: flex; justify-content: center; gap: 60px; margin-top: 40px;">
+                <div><div style="font-size: 2rem; color: #d4af37; font-family: Inter;">5,000+</div><div style="font-size: 0.65rem; letter-spacing: 2px; color: #b0c4de;">FILMS CATALOGUED</div></div>
+                <div><div style="font-size: 2rem; color: #d4af37; font-family: Inter;">7</div><div style="font-size: 0.65rem; letter-spacing: 2px; color: #b0c4de;">MOODS EXPLORED</div></div>
+                <div><div style="font-size: 2rem; color: #d4af37; font-family: Inter;">∞</div><div style="font-size: 0.65rem; letter-spacing: 2px; color: #b0c4de;">STORIES WAITING</div></div>
+            </div>
         </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
-    col1, col2, col3 = st.columns([1, 1.5, 1])
+    st.markdown("<h3 style='text-align: center; margin-bottom: 24px; color: #d4af37; font-family: Playfair Display, serif;'>Explore by Mood</h3>", unsafe_allow_html=True)
+    st.markdown(
+    """
+    <div class="mood-grid">
+        <div class="mood-card">Wonder</div>
+        <div class="mood-card">Curiosity</div>
+        <div class="mood-card">Adrenaline</div>
+        <div class="mood-card">Reflection</div>
+        <div class="mood-card">Heartbreak</div>
+        <div class="mood-card">Hope</div>
+        <div class="mood-card">Mystery</div>
+        <div class="mood-card">Nostalgia</div>
+        <div class="mood-card">Rage</div>
+        <div class="mood-card">Escape</div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+    render_philosophy()
+
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(
+            "<p style='color: #b0c4de; font-size: 0.95rem;'>Select a film that <span style='color: #d4af37;'>moved you</span> and we'll find your next cinematic chapter — curated by feeling, not just genre.</p>",
+            unsafe_allow_html=True
+    )
     with col2:
-        if st.button("🚀 Start Exploring", use_container_width=True, type="primary"):
-            st.session_state.current_page = "Recommender"
+        if st.button("BEGIN YOUR JOURNEY ↗", use_container_width=True, type="primary"):
+            st.session_state.current_page = "Discovery"
             st.rerun()
 
-    st.write("")
-    #st.markdown("### 🔥 Trending Now")
-    # cols = st.columns(5)
-    # trending_movies = movies.sample(n=5)
-    # for idx, col in enumerate(cols):
-    #     movie_row = trending_movies.iloc[idx]
-    #     poster = fetch_poster(int(movie_row.movie_id), api_key)
-    #     with col:
-    #         st.markdown(
-    #             f'''
-    #             <div class="movie-card" style="margin-bottom: 24px;">
-    #                 <img src="{poster}" style="width:100%; display:block;">
-    #                 <div class='movie-title'>{movie_row.title}</div>
-    #             </div>
-    #             ''',
-    #             unsafe_allow_html=True,
-    #         )
+# Trending section — pick 6 random movies
+    trending_sample = movies.sample(6)
+    trending_html = '<div style="margin-bottom: 40px;"><h3 style="letter-spacing: 3px; font-size: 0.85rem; color: #d4af37; font-family: Inter;">CURRENTLY TRENDING</h3><div style="height: 1px; background: rgba(212,175,55,0.2); margin: 8px 0 16px;"></div><div style="display: flex; gap: 8px; overflow-x: auto;">'
 
-   # render_featured_movie(movies, api_key)
-    st.markdown('</div>', unsafe_allow_html=True)
+    for _, row in trending_sample.iterrows():
+        poster = fetch_poster(int(row["movie_id"]), api_key)
+        trending_html += f'''
+            <div style="min-width: 110px; border-radius: 6px; overflow: hidden; position: relative; cursor: pointer;">
+                <img src="{poster}" style="width: 110px; height: 155px; object-fit: cover; display: block;" />
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.85)); padding: 20px 6px 6px; font-size: 0.7rem; color: #fff; font-family: Inter;">{row["title"]}</div>
+            </div>'''
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown(f'<div class="stat-card"><h3>{len(movies):,}</h3><p>Movies available</p></div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="stat-card"><h3>⚡</h3><p>Instant recommendations</p></div>', unsafe_allow_html=True)
-    with col3:
-        st.markdown('<div class="stat-card"><h3>🧠</h3><p>Content-based filtering</p></div>', unsafe_allow_html=True)
-
-    render_how_it_works()
+    trending_html += '</div></div>'
+    st.markdown(trending_html, unsafe_allow_html=True)
 
 
-def show_recommender(movies: pd.DataFrame, similarity, api_key: str):
-    """Recommender page with movie selection and results"""
+def show_discovery(movies: pd.DataFrame, similarity, api_key: str):
+    """Discovery page with movie selection and results"""
     st.markdown(
         """
-        <div class="hero">
-            <h1>🎯 Find Your Next Favorite</h1>
-            <p>Choose a movie you love, get 5 perfect recommendations</p>
+        <div class="hero" style="padding: 40px 32px;">
+            <h2>The Discovery Engine</h2>
+            <p>Find the experience you are seeking.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -395,23 +448,22 @@ def show_recommender(movies: pd.DataFrame, similarity, api_key: str):
 
     with col1:
         selected_movie_name = st.selectbox(
-            "🎬 Search movies...",
+            "What was the last story that moved you?",
             movies["title"].values,
-            placeholder="Type to search...",
+            placeholder="Search for a film...",
         )
 
     with col2:
         st.write("")
         st.write("")
-        recommend_button = st.button("Get Recommendations", type="primary", use_container_width=True)
+        recommend_button = st.button("Find My Story", type="primary", use_container_width=True)
 
     if recommend_button:
         try:
-            with st.spinner("🎬 Finding perfect matches for you..."):
+            with st.spinner("Weaving your cinematic journey..."):
                 names, posters = recommend(selected_movie_name, movies, similarity, api_key)
 
-            st.markdown("### ✨ Recommended For You")
-            st.markdown(f"*Based on: **{selected_movie_name}***")
+            st.markdown("### ✨ Your Next Chapter")
             st.markdown("---")
 
             # Create responsive grid
@@ -424,19 +476,10 @@ def show_recommender(movies: pd.DataFrame, similarity, api_key: str):
                         unsafe_allow_html=True,
             )
 
-            st.success("🎉 Recommendations loaded! Enjoy!!")
-
         except Exception as ex:
             st.error(f"❌ Unable to generate recommendations: {ex}")
 
     st.markdown("---")
-    with st.expander("💡 How to get better recommendations"):
-        st.markdown(
-            """
-            - **Pick a movie you loved:** The more specific and accurate your selection, the better the recommendations
-            - **Fine-tune:** Come back and try different movies to explore more recommendations
-            """
-        )
 
 
 # ============================================================================
@@ -445,8 +488,8 @@ def show_recommender(movies: pd.DataFrame, similarity, api_key: str):
 def main():
     # Page config
     st.set_page_config(
-        page_title="Movie Recommender",
-        page_icon="🎬",
+        page_title="Musefall",
+        page_icon="✨",
         layout="wide",
         initial_sidebar_state="expanded",
     )
@@ -460,20 +503,48 @@ def main():
 
     # Sidebar Navigation
     with st.sidebar:
-        st.markdown("### 🎬 Navigation")
-        pages = ["Home", "Recommender"]
-        selected = st.radio(
-            "Choose a page:",
-            pages,
-            index=pages.index(st.session_state.current_page) if st.session_state.current_page in pages else 0,
-        )
-        st.session_state.current_page = selected
+        st.markdown("""
+            <div style="padding: 24px 8px 16px; border-bottom: 1px solid rgba(212,175,55,0.2); margin-bottom: 24px;">
+                <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: #d4af37; margin: 0; letter-spacing: 2px;">Musefall</p>
+                <p style="font-size: 0.6rem; letter-spacing: 3px; color: #b0c4de; margin: 4px 0 0;">CINEMATIC DISCOVERY</p>
+            </div>
+        """, unsafe_allow_html=True)
 
-        st.markdown("---")
-        st.markdown("### ℹ️ About")
-        st.markdown("A cinematic movie recommendation system powered by machine learning.")
-        st.markdown("### 🔗 Links")
-        st.markdown("[TMDB](https://www.themoviedb.org/)  |  [GitHub](https://github.com)")
+        st.markdown("<p style='font-size: 0.65rem; letter-spacing: 3px; color: #b0c4de; margin-bottom: 8px;'>NAVIGATE</p>", unsafe_allow_html=True)
+        
+        pages = ["Home", "Discovery"]
+        for page in pages:
+            is_active = st.session_state.current_page == page
+            if st.button(
+                page,
+                key=f"nav_{page}",
+                use_container_width=True,
+            ):
+                st.session_state.current_page = page
+                st.rerun()
+
+        st.markdown("<div style='height: 1px; background: rgba(212,175,55,0.15); margin: 24px 0;'></div>", unsafe_allow_html=True)
+
+        st.markdown("<p style='font-size: 0.65rem; letter-spacing: 3px; color: #b0c4de; margin-bottom: 12px;'>FILTER</p>", unsafe_allow_html=True)
+
+        st.markdown("<p style='font-size: 0.75rem; color: #d4af37; letter-spacing: 1px; margin-bottom: 4px;'>Genre</p>", unsafe_allow_html=True)
+        genre_filter = st.selectbox("", ["All", "Action", "Adventure", "Comedy", "Drama", "Thriller", "Romance", "Science Fiction", "Horror", "Animation"], label_visibility="collapsed")
+
+        st.markdown("<p style='font-size: 0.75rem; color: #d4af37; letter-spacing: 1px; margin: 12px 0 4px;'>Min Rating</p>", unsafe_allow_html=True)
+        min_rating = st.slider("", 0.0, 10.0, 7.0, step=0.5, label_visibility="collapsed")
+
+        st.markdown("<p style='font-size: 0.75rem; color: #d4af37; letter-spacing: 1px; margin: 12px 0 4px;'>Era</p>", unsafe_allow_html=True)
+        era_filter = st.radio("", ["All Time", "Classic (pre-1990)", "90s–2000s", "Modern (2010+)"], label_visibility="collapsed")
+
+        st.markdown("<div style='height: 1px; background: rgba(212,175,55,0.15); margin: 24px 0;'></div>", unsafe_allow_html=True)
+
+        st.markdown("<p style='font-size: 0.65rem; letter-spacing: 3px; color: #b0c4de; margin-bottom: 8px;'>ABOUT</p>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size: 0.8rem; color: #b0c4de; line-height: 1.6;'>A cinematic journey curated by feeling, not just genre.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size: 0.75rem; margin-top: 12px;'><a href='https://www.themoviedb.org/' style='color: #d4af37; text-decoration: none;'>TMDB</a> &nbsp;|&nbsp; <a href='https://github.com' style='color: #d4af37; text-decoration: none;'>GitHub</a></p>", unsafe_allow_html=True)
+
+        st.session_state.genre_filter = genre_filter
+        st.session_state.min_rating = min_rating
+        st.session_state.era_filter = era_filter
 
     # Load data
     movies = load_movies()
@@ -484,8 +555,8 @@ def main():
     # Route to appropriate page
     if st.session_state.current_page == "Home":
         show_home(movies, api_key)
-    elif st.session_state.current_page == "Recommender":
-        show_recommender(movies, similarity, api_key)
+    elif st.session_state.current_page == "Discovery":
+        show_discovery(movies, similarity, api_key)
 
 
 if __name__ == "__main__":
