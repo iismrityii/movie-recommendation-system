@@ -322,10 +322,212 @@ def apply_premium_theme():
             box-shadow: none;
             padding-left: 8px;
         }}
+
+        .disc-hero {{
+            position: relative;
+            padding: 44px 48px 36px;
+            border-bottom: 1px solid rgba(212,175,55,0.07);
+            overflow: hidden;
+        }}
+        .disc-glow {{
+            position: absolute;
+            top: -40px; right: 60px;
+            width: 320px; height: 220px;
+            background: radial-gradient(ellipse, rgba(212,175,55,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }}
+        .disc-eyebrow {{
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.55);
+            margin-bottom: 10px;
+            position: relative;
+        }}
+        .disc-hero .disc-title {{
+            font-family: 'Cormorant Garamond', serif !important;
+            font-weight: 600 !important;
+            font-size: 2.8rem;
+            color: #f0d98c !important;
+            line-height: 1.05;
+            margin: 0 0 10px;
+            position: relative;
+        }}
+        .disc-sub {{
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: #8a9aa8;
+            margin: 0;
+            position: relative;
+        }}
+ 
+        .disc-search-wrap {{
+            padding: 28px 48px 4px;
+            border-bottom: 1px solid rgba(212,175,55,0.07);
+        }}
+        .disc-search-label {{
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.5);
+            margin-bottom: 12px;
+            display: block;
+        }}
+ 
+        .recent-row {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 48px 20px;
+            flex-wrap: wrap;
+        }}
+        .recent-label {{
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.4);
+        }}
+        .recent-chip {{
+            font-size: 0.75rem;
+            color: #d4af37;
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 20px;
+            padding: 4px 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }}
+        .recent-chip:hover {{
+            background: rgba(212,175,55,0.08);
+            border-color: #d4af37;
+        }}
+ 
+        .results-header {{
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 24px 48px 20px;
+        }}
+        .results-label {{
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.45);
+            white-space: nowrap;
+        }}
+        .results-rule {{
+            flex: 1;
+            height: 1px;
+            background: rgba(212,175,55,0.1);
+        }}
+        .results-count {{
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: rgba(212,175,55,0.35);
+        }}
+ 
+        .rec-grid {{
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            padding: 0 48px 16px;
+        }}
+        .rec-card {{
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }}
+        .rec-card:hover {{
+            transform: translateY(-6px);
+        }}
+        .rec-poster {{
+            aspect-ratio: 2/3;
+            border-radius: 8px;
+            border: 1px solid rgba(212,175,55,0.15);
+            overflow: hidden;
+            margin-bottom: 10px;
+            position: relative;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }}
+        .rec-card:hover .rec-poster {{
+            border-color: rgba(212,175,55,0.4);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+        }}
+        .rec-poster img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }}
+        .rec-bookmark {{
+            position: absolute;
+            top: 8px; right: 8px;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            background: rgba(4,12,22,0.8);
+            border: 1px solid rgba(212,175,55,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: #d4af37;
+            cursor: pointer;
+        }}
+        .rec-title {{
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            color: #cdd8e0;
+            text-align: center;
+            line-height: 1.35;
+            margin-bottom: 6px;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        .rec-meta {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+        .rec-score {{
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: #d4af37;
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 10px;
+            padding: 2px 8px;
+        }}
+ 
+        .disc-empty {{
+            padding: 56px 48px 60px;
+            text-align: center;
+        }}
+        .disc-empty-icon {{
+            font-size: 2rem;
+            color: rgba(212,175,55,0.25);
+            margin-bottom: 16px;
+        }}
+        .disc-empty-title {{
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #6a7a88;
+            margin-bottom: 8px;
+        }}
+        .disc-empty-hint {{
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.3);
+        }}
+
         </style>
         """,
         unsafe_allow_html=True,
     )
+    
 
 
 
@@ -349,6 +551,7 @@ def render_philosophy():
 # ============================================================================
 def show_home(movies: pd.DataFrame, api_key: str):
     """Home page with hero, moods, philosophy, and call to action"""
+    
     st.markdown(
     """
     <div class="hero" style="
@@ -413,7 +616,7 @@ def show_home(movies: pd.DataFrame, api_key: str):
             st.session_state.current_page = "Discovery"
             st.rerun()
 
-# Trending section — pick 6 random movies
+    #Trending section — pick 6 random movies
     trending_sample = movies.sample(6)
     trending_html = '<div style="margin-bottom: 40px;"><h3 style="letter-spacing: 3px; font-size: 0.85rem; color: #d4af37; font-family: Inter;">CURRENTLY TRENDING</h3><div style="height: 1px; background: rgba(212,175,55,0.2); margin: 8px 0 16px;"></div><div style="display: flex; gap: 8px; overflow-x: auto;">'
 
@@ -429,62 +632,139 @@ def show_home(movies: pd.DataFrame, api_key: str):
     st.markdown(trending_html, unsafe_allow_html=True)
 
 
-def show_discovery(movies: pd.DataFrame, similarity, api_key: str):
-    """Discovery page with movie selection and results"""
-    st.markdown(
-        """
-        <div class="hero" style="padding: 40px 32px;">
-            <h2>The Discovery Engine</h2>
-            <p>Find the experience you are seeking.</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
+def show_discovery(movies, similarity, api_key):
+ 
+    # ── Session state init ────────────────────────────────────────────────
+    if "recent_searches" not in st.session_state:
+        st.session_state.recent_searches = []
+    if "watchlist" not in st.session_state:
+        st.session_state.watchlist = []
+ 
+    # ── Hero ──────────────────────────────────────────────────────────────
+    st.markdown("""
+    <div class="disc-hero">
+        <div class="disc-glow"></div>
+        <div class="disc-eyebrow">The Discovery Engine</div>
+        <h2 class="disc-title">Find Your<br>Next Chapter</h2>
+        <p class="disc-sub">"Find the experience you are seeking."</p>
+    </div>
+    """, unsafe_allow_html=True)
+ 
+    # ── API key warning ───────────────────────────────────────────────────
     if not api_key:
-        st.warning("⚠️ TMDB API key not found. Add TMDB_API_KEY in your .env file.")
-
-    col1, col2 = st.columns([3, 1])
-
-    with col1:
-        selected_movie_name = st.selectbox(
-            "What was the last story that moved you?",
-            movies["title"].values,
+        st.warning("⚠️ TMDB API key not found. Add TMDB_API_KEY to your .env file.")
+ 
+    # ── Search row ────────────────────────────────────────────────────────
+    st.markdown("""
+    <div class="disc-search-wrap">
+        <span class="disc-search-label">What was the last story that moved you?</span>
+    </div>
+    """, unsafe_allow_html=True)
+ 
+    col_select, col_btn = st.columns([3, 1])
+    with col_select:
+        selected_movie = st.selectbox(
+            label="",
+            options=movies["title"].values,
             placeholder="Search for a film...",
+            label_visibility="collapsed",
         )
-
-    with col2:
-        st.write("")
-        st.write("")
-        recommend_button = st.button("Find My Story", type="primary", use_container_width=True)
-
-    if recommend_button:
-        try:
-            with st.spinner("Weaving your cinematic journey..."):
-                names, posters = recommend(selected_movie_name, movies, similarity, api_key)
-
-            st.markdown("### ✨ Your Next Chapter")
-            st.markdown("---")
-
-            # Create responsive grid
-            cols = st.columns(5)
-            for idx, col in enumerate(cols):
-                with col:
-                    st.image(posters[idx], use_container_width=True)
-                    st.markdown(
-                        f"<div class='movie-title'>{names[idx]}</div>",
-                        unsafe_allow_html=True,
-            )
-
-        except Exception as ex:
-            st.error(f"❌ Unable to generate recommendations: {ex}")
-
-    st.markdown("---")
+    with col_btn:
+        st.write("")   # vertical alignment nudge
+        find_btn = st.button(
+            "Find My Story",
+            type="primary",
+            use_container_width=True,
+        )
+ 
+    # ── Recently searched chips ───────────────────────────────────────────
+    if st.session_state.recent_searches:
+        chips_html = '<div class="recent-row"><span class="recent-label">Recent</span>'
+        for title in st.session_state.recent_searches[-4:]:
+            chips_html += f'<span class="recent-chip">{title}</span>'
+        chips_html += "</div>"
+        st.markdown(chips_html, unsafe_allow_html=True)
+ 
+    # ── Results ───────────────────────────────────────────────────────────
+    if find_btn and selected_movie:
+ 
+        # Track recent searches (deduplicated, last 4)
+        recent = st.session_state.recent_searches
+        if selected_movie in recent:
+            recent.remove(selected_movie)
+        recent.append(selected_movie)
+        st.session_state.recent_searches = recent[-4:]
+ 
+        with st.spinner("Weaving your cinematic journey..."):
+            try:
+                names, posters = recommend(selected_movie, movies, similarity, api_key)
+            except Exception as ex:
+                st.error(f"❌ Could not generate recommendations: {ex}")
+                st.stop()
+ 
+        # Results header
+        st.markdown("""
+        <div class="results-header">
+            <span class="results-label">Your next chapter</span>
+            <div class="results-rule"></div>
+            <span class="results-count">5 films</span>
+        </div>
+        """, unsafe_allow_html=True)
+ 
+        # ── 5-card poster grid ────────────────────────────────────────────
+        # Build HTML string for the grid so hover effects work cleanly
+        cards_html = '<div class="rec-grid">'
+        for i in range(5):
+            in_watchlist = names[i] in st.session_state.watchlist
+            bookmark_color = "#d4af37" if in_watchlist else "rgba(212,175,55,0.6)"
+            bookmark_symbol = "★" if in_watchlist else "☆"
+            cards_html += f"""
+            <div class="rec-card">
+                <div class="rec-poster">
+                    <img src="{posters[i]}" alt="{names[i]}" loading="lazy" />
+                    <div class="rec-bookmark" style="color:{bookmark_color}"
+                         title="Add to watchlist">{bookmark_symbol}</div>
+                </div>
+                <div class="rec-title">{names[i]}</div>
+                <div class="rec-meta">
+                    <span class="rec-score">✦ match</span>
+                </div>
+            </div>"""
+        cards_html += "</div>"
+        st.markdown(cards_html, unsafe_allow_html=True)
+ 
+        # ── Watchlist buttons (Streamlit native, so they actually work) ───
+        st.markdown("<div style='padding: 0 48px;'>", unsafe_allow_html=True)
+        wl_cols = st.columns(5)
+        for i, col in enumerate(wl_cols):
+            with col:
+                in_wl = names[i] in st.session_state.watchlist
+                label = "★ Saved" if in_wl else "☆ Save"
+                if st.button(label, key=f"wl_{i}_{names[i]}", use_container_width=True):
+                    if in_wl:
+                        st.session_state.watchlist.remove(names[i])
+                    else:
+                        st.session_state.watchlist.append(names[i])
+                    st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+ 
+    else:
+        # ── Empty state ───────────────────────────────────────────────────
+        st.markdown("""
+        <div class="disc-empty">
+            <div class="disc-empty-icon">✦</div>
+            <div class="disc-empty-title">
+                Select a film above to begin your journey.
+            </div>
+            <div class="disc-empty-hint">5 recommendations await</div>
+        </div>
+        """, unsafe_allow_html=True)
 
 
 # ============================================================================
 # MAIN APP
 # ============================================================================
+
 def main():
     # Page config
     st.set_page_config(
@@ -515,11 +795,7 @@ def main():
         pages = ["Home", "Discovery"]
         for page in pages:
             is_active = st.session_state.current_page == page
-            if st.button(
-                page,
-                key=f"nav_{page}",
-                use_container_width=True,
-            ):
+            if st.button(page, key=f"nav_{page}", use_container_width=True):
                 st.session_state.current_page = page
                 st.rerun()
 
