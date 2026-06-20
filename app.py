@@ -322,35 +322,35 @@ def apply_premium_theme():
             box-shadow: none;
             padding-left: 8px;
         }}
-
+        
         .disc-hero {{
             position: relative;
-            padding: 44px 48px 36px;
-            border-bottom: 1px solid rgba(212,175,55,0.07);
+            padding: 40px 48px 28px;
             overflow: hidden;
         }}
         .disc-glow {{
             position: absolute;
             top: -40px; right: 60px;
             width: 320px; height: 220px;
-            background: radial-gradient(ellipse, rgba(212,175,55,0.07) 0%, transparent 70%);
+            background: radial-gradient(ellipse, rgba(212,175,55,0.08) 0%, transparent 70%);
             pointer-events: none;
         }}
         .disc-eyebrow {{
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: 600;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: rgba(212,175,55,0.55);
-            margin-bottom: 10px;
+            color: rgba(212,175,55,0.6);
+            margin: 0 0 10px;
             position: relative;
         }}
         .disc-hero .disc-title {{
             font-family: 'Cormorant Garamond', serif !important;
             font-weight: 600 !important;
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             color: #f0d98c !important;
-            line-height: 1.05;
-            margin: 0 0 10px;
+            line-height: 1.1;
+            margin: 0 0 12px;
             position: relative;
         }}
         .disc-sub {{
@@ -363,30 +363,64 @@ def apply_premium_theme():
         }}
  
         .disc-search-wrap {{
-            padding: 28px 48px 4px;
-            border-bottom: 1px solid rgba(212,175,55,0.07);
+            padding: 8px 48px 4px;
         }}
         .disc-search-label {{
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: 600;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: rgba(212,175,55,0.5);
-            margin-bottom: 12px;
+            color: rgba(212,175,55,0.6);
+            margin: 0 0 12px;
             display: block;
+        }}
+ 
+        /* align selectbox + button in the same row, same height */
+        .disc-search-wrap [data-testid="stHorizontalBlock"] {{
+            align-items: stretch;
+            gap: 12px;
+        }}
+        .disc-search-wrap .stSelectbox {{
+            height: 100%;
+        }}
+        .disc-search-wrap .stSelectbox > div > div {{
+            background: #0a1620;
+            border: 1px solid rgba(212,175,55,0.25);
+            border-radius: 6px;
+            min-height: 46px;
+            display: flex;
+            align-items: center;
+            color: #cdd8e0;
+        }}
+        .disc-search-wrap .stButton {{
+            height: 100%;
+            display: flex;
+            align-items: stretch;
+        }}
+        .disc-search-wrap .stButton > button {{
+            width: 100%;
+            height: 46px;
+            border: 1px solid #d4af37;
+            background: rgba(212,175,55,0.08);
+            color: #f0d060;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            border-radius: 6px;
         }}
  
         .recent-row {{
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 16px 48px 20px;
+            padding: 16px 48px 8px;
             flex-wrap: wrap;
         }}
         .recent-label {{
             font-size: 10px;
+            font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: rgba(212,175,55,0.4);
+            color: rgba(212,175,55,0.45);
         }}
         .recent-chip {{
             font-size: 0.75rem;
@@ -396,6 +430,7 @@ def apply_premium_theme():
             padding: 4px 14px;
             cursor: pointer;
             transition: all 0.2s;
+            background: transparent;
         }}
         .recent-chip:hover {{
             background: rgba(212,175,55,0.08);
@@ -406,41 +441,28 @@ def apply_premium_theme():
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 24px 48px 20px;
+            padding: 28px 48px 18px;
         }}
         .results-label {{
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: 600;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: rgba(212,175,55,0.45);
+            color: rgba(212,175,55,0.55);
             white-space: nowrap;
         }}
         .results-rule {{
             flex: 1;
             height: 1px;
-            background: rgba(212,175,55,0.1);
+            background: rgba(212,175,55,0.12);
         }}
         .results-count {{
             font-size: 10px;
             letter-spacing: 2px;
-            color: rgba(212,175,55,0.35);
+            color: rgba(212,175,55,0.4);
         }}
  
-        .rec-grid {{
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-            padding: 0 48px 16px;
-        }}
-        .rec-card {{
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }}
-        .rec-card:hover {{
-            transform: translateY(-6px);
-        }}
+        /* results grid uses Streamlit columns; this styles the column content */
         .rec-poster {{
             aspect-ratio: 2/3;
             border-radius: 8px;
@@ -450,9 +472,10 @@ def apply_premium_theme():
             position: relative;
             transition: border-color 0.3s, box-shadow 0.3s;
         }}
-        .rec-card:hover .rec-poster {{
+        .rec-poster:hover {{
             border-color: rgba(212,175,55,0.4);
             box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+            transform: translateY(-4px);
         }}
         .rec-poster img {{
             width: 100%;
@@ -472,7 +495,6 @@ def apply_premium_theme():
             justify-content: center;
             font-size: 13px;
             color: #d4af37;
-            cursor: pointer;
         }}
         .rec-title {{
             font-family: 'Cormorant Garamond', serif;
@@ -486,11 +508,6 @@ def apply_premium_theme():
             align-items: center;
             justify-content: center;
         }}
-        .rec-meta {{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }}
         .rec-score {{
             font-size: 0.65rem;
             letter-spacing: 1px;
@@ -498,6 +515,27 @@ def apply_premium_theme():
             border: 1px solid rgba(212,175,55,0.3);
             border-radius: 10px;
             padding: 2px 8px;
+            display: block;
+            text-align: center;
+            width: fit-content;
+            margin: 0 auto 8px;
+        }}
+ 
+        /* Save buttons — full width of their column, matches poster width */
+        .rec-col .stButton > button {{
+            width: 100%;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            padding: 8px 0;
+            border: 1px solid rgba(212,175,55,0.3);
+            background: transparent;
+            color: rgba(212,175,55,0.8);
+            border-radius: 5px;
+        }}
+        .rec-col .stButton > button:hover {{
+            border-color: #d4af37;
+            color: #f0d060;
+            background: rgba(212,175,55,0.06);
         }}
  
         .disc-empty {{
@@ -522,6 +560,50 @@ def apply_premium_theme():
             text-transform: uppercase;
             color: rgba(212,175,55,0.3);
         }}
+
+        @keyframes mfFadeIn {{
+            from {{opacity: 0; transform: translateY(8px); }}
+            to   {{ opacity: 1; transform: translateY(0); }}
+        }}
+        [data-testid="stMainBlockContainer"] > div:first-child {{
+            animation: mfFadeIn 0.45s ease-out;
+        }}
+ 
+        .page-bg-dark {{
+            background-color: #060e1a;
+            padding: 0;
+            min-height: 100vh;
+        }}
+    
+        /* Sidebar nav links styled like tabs */
+        .nav-link {{
+            display: block;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: #5a7080;
+            padding: 8px 0 8px 10px;
+            border-left: 2px solid transparent;
+            transition: all 0.25s ease;
+            margin-bottom: 2px;
+        }}
+        .nav-link:hover {{
+            color: #d4af37;
+            border-left-color: rgba(212,175,55,0.4);
+            padding-left: 14px;
+        }}
+        .nav-link.active {{
+            color: #d4af37;
+            border-left-color: #d4af37;
+            padding-left: 14px;
+        }}
+
+        /* Dark bg for non-home pages — targets main content area */
+        [data-testid="stMainBlockContainer"] {{
+            background-color: #060e1a !important;
+        }}
+
 
         </style>
         """,
@@ -551,6 +633,12 @@ def render_philosophy():
 # ============================================================================
 def show_home(movies: pd.DataFrame, api_key: str):
     """Home page with hero, moods, philosophy, and call to action"""
+    st.markdown("""
+    <style>
+    .stApp { background-image: linear-gradient(rgba(3,11,20,0.85), rgba(3,11,20,0.92)), url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1920&q=20') !important; }
+    [data-testid="stMainBlockContainer"] { background-color: transparent !important; }
+    </style>
+    """, unsafe_allow_html=True)
     
     st.markdown(
     """
@@ -634,13 +722,20 @@ def show_home(movies: pd.DataFrame, api_key: str):
 
 def show_discovery(movies, similarity, api_key):
  
-    # ── Session state init ────────────────────────────────────────────────
     if "recent_searches" not in st.session_state:
         st.session_state.recent_searches = []
     if "watchlist" not in st.session_state:
         st.session_state.watchlist = []
  
-    # ── Hero ──────────────────────────────────────────────────────────────
+    st.markdown("""
+    <style>
+        .stApp { background-image: none !important; background-color: #060e1a !important; }
+        .stApp::before { display: none !important; }
+        [data-testid="stMainBlockContainer"] { background-color: #060e1a !important; }
+        </style>
+        """, unsafe_allow_html=True)
+
+    # Hero
     st.markdown("""
     <div class="disc-hero">
         <div class="disc-glow"></div>
@@ -650,17 +745,17 @@ def show_discovery(movies, similarity, api_key):
     </div>
     """, unsafe_allow_html=True)
  
-    # ── API key warning ───────────────────────────────────────────────────
     if not api_key:
         st.warning("⚠️ TMDB API key not found. Add TMDB_API_KEY to your .env file.")
  
-    # ── Search row ────────────────────────────────────────────────────────
+    # Search row
     st.markdown("""
     <div class="disc-search-wrap">
         <span class="disc-search-label">What was the last story that moved you?</span>
     </div>
     """, unsafe_allow_html=True)
  
+    st.markdown('<div class="disc-search-wrap">', unsafe_allow_html=True)
     col_select, col_btn = st.columns([3, 1])
     with col_select:
         selected_movie = st.selectbox(
@@ -668,27 +763,25 @@ def show_discovery(movies, similarity, api_key):
             options=movies["title"].values,
             placeholder="Search for a film...",
             label_visibility="collapsed",
+            key="disc_select",
         )
     with col_btn:
-        st.write("")   # vertical alignment nudge
-        find_btn = st.button(
-            "Find My Story",
-            type="primary",
-            use_container_width=True,
-        )
+        find_btn = st.button("Find My Story", type="primary", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
  
-    # ── Recently searched chips ───────────────────────────────────────────
+    # Recent searches — real buttons styled as chips
     if st.session_state.recent_searches:
-        chips_html = '<div class="recent-row"><span class="recent-label">Recent</span>'
-        for title in st.session_state.recent_searches[-4:]:
-            chips_html += f'<span class="recent-chip">{title}</span>'
-        chips_html += "</div>"
-        st.markdown(chips_html, unsafe_allow_html=True)
+        st.markdown('<div class="recent-row"><span class="recent-label">Recent</span></div>', unsafe_allow_html=True)
+        chip_cols = st.columns(len(st.session_state.recent_searches[-4:]) + 4)
+        for i, title in enumerate(st.session_state.recent_searches[-4:]):
+            with chip_cols[i]:
+                if st.button(title, key=f"recent_{i}_{title}"):
+                    st.session_state["disc_select"] = title
+                    find_btn = True
+                    selected_movie = title
  
-    # ── Results ───────────────────────────────────────────────────────────
+    # Results
     if find_btn and selected_movie:
- 
-        # Track recent searches (deduplicated, last 4)
         recent = st.session_state.recent_searches
         if selected_movie in recent:
             recent.remove(selected_movie)
@@ -700,9 +793,9 @@ def show_discovery(movies, similarity, api_key):
                 names, posters = recommend(selected_movie, movies, similarity, api_key)
             except Exception as ex:
                 st.error(f"❌ Could not generate recommendations: {ex}")
+                st.markdown('</div>', unsafe_allow_html=True)
                 st.stop()
  
-        # Results header
         st.markdown("""
         <div class="results-header">
             <span class="results-label">Your next chapter</span>
@@ -711,34 +804,23 @@ def show_discovery(movies, similarity, api_key):
         </div>
         """, unsafe_allow_html=True)
  
-        # ── 5-card poster grid ────────────────────────────────────────────
-        # Build HTML string for the grid so hover effects work cleanly
-        cards_html = '<div class="rec-grid">'
-        for i in range(5):
-            in_watchlist = names[i] in st.session_state.watchlist
-            bookmark_color = "#d4af37" if in_watchlist else "rgba(212,175,55,0.6)"
-            bookmark_symbol = "★" if in_watchlist else "☆"
-            cards_html += f"""
-            <div class="rec-card">
+        cols = st.columns(5)
+        for i, col in enumerate(cols):
+            with col:
+                st.markdown('<div class="rec-col">', unsafe_allow_html=True)
+ 
+                in_wl = names[i] in st.session_state.watchlist
+                bookmark = "★" if in_wl else "☆"
+ 
+                st.markdown(f"""
                 <div class="rec-poster">
                     <img src="{posters[i]}" alt="{names[i]}" loading="lazy" />
-                    <div class="rec-bookmark" style="color:{bookmark_color}"
-                         title="Add to watchlist">{bookmark_symbol}</div>
+                    <div class="rec-bookmark">{bookmark}</div>
                 </div>
                 <div class="rec-title">{names[i]}</div>
-                <div class="rec-meta">
-                    <span class="rec-score">✦ match</span>
-                </div>
-            </div>"""
-        cards_html += "</div>"
-        st.markdown(cards_html, unsafe_allow_html=True)
+                <div class="rec-score">✦ match</div>
+                """, unsafe_allow_html=True)
  
-        # ── Watchlist buttons (Streamlit native, so they actually work) ───
-        st.markdown("<div style='padding: 0 48px;'>", unsafe_allow_html=True)
-        wl_cols = st.columns(5)
-        for i, col in enumerate(wl_cols):
-            with col:
-                in_wl = names[i] in st.session_state.watchlist
                 label = "★ Saved" if in_wl else "☆ Save"
                 if st.button(label, key=f"wl_{i}_{names[i]}", use_container_width=True):
                     if in_wl:
@@ -746,16 +828,14 @@ def show_discovery(movies, similarity, api_key):
                     else:
                         st.session_state.watchlist.append(names[i])
                     st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+ 
+                st.markdown('</div>', unsafe_allow_html=True)
  
     else:
-        # ── Empty state ───────────────────────────────────────────────────
         st.markdown("""
         <div class="disc-empty">
             <div class="disc-empty-icon">✦</div>
-            <div class="disc-empty-title">
-                Select a film above to begin your journey.
-            </div>
+            <div class="disc-empty-title">Select a film above to begin your journey.</div>
             <div class="disc-empty-hint">5 recommendations await</div>
         </div>
         """, unsafe_allow_html=True)
