@@ -7,6 +7,7 @@ import random
 import pandas as pd
 import requests
 import streamlit as st
+import json as _json
 
 try:
     from dotenv import load_dotenv
@@ -39,6 +40,10 @@ def download_similarity():
     if not os.path.exists("similarity.pkl"):
         url = f"https://drive.google.com/uc?id={FILE_ID}"
         gdown.download(url, "similarity.pkl", quiet=False)
+
+@st.cache_data(show_spinner=False)
+def load_movies_full() -> pd.DataFrame:
+    return pd.read_csv("tmdb_5000_movies.csv")
 
 
 @st.cache_data(show_spinner=False)
@@ -366,7 +371,7 @@ def apply_premium_theme():
             padding: 8px 48px 4px;
         }}
         .disc-search-label {{
-            font-size: 11px;
+            font-size: 15px;
             font-weight: 600;
             letter-spacing: 3px;
             text-transform: uppercase;
@@ -604,6 +609,153 @@ def apply_premium_theme():
             background-color: #060e1a !important;
         }}
 
+        /*explore page specific styles */
+        .exp-hero {{
+            position: relative;
+            padding: 40px 48px 28px;
+        }}
+        .exp-eyebrow {{
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.6);
+            margin: 0 0 10px;
+        }}
+        .exp-hero .exp-title {{
+            font-family: 'Cormorant Garamond', serif !important;
+            font-weight: 600 !important;
+            font-size: 2.6rem;
+            color: #f0d98c !important;
+            line-height: 1.1;
+            margin: 0 0 12px;
+        }}
+        .exp-sub {{
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: #8a9aa8;
+            margin: 0;
+        }}
+ 
+        .exp-filter-section {{
+            padding: 8px 48px 4px;
+        }}
+        .exp-filter-label {{
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.5);
+            margin: 16px 0 10px;
+            display: block;
+        }}
+ 
+        /* Explore pill buttons — nowrap is critical */
+        .exp-filter-section div[data-testid="stColumn"] {{
+            padding: 0 4px !important;
+            flex: 0 0 auto !important;
+            width: auto !important;
+            min-width: unset !important;
+        }}
+        .exp-filter-section div[data-testid="stColumn"] .stButton > button {{
+            white-space: nowrap !important;
+            width: auto !important;
+            min-width: unset !important;
+            padding: 6px 14px !important;
+            border-radius: 30px !important;
+            border: 1px solid rgba(212,175,55,0.3) !important;
+            background: transparent !important;
+            color: #d4af37 !important;
+            font-size: 0.78rem !important;
+            letter-spacing: 1px !important;
+            height: 34px !important;
+            line-height: 1 !important;
+            font-weight: 300 !important;
+        }}
+        .exp-filter-section div[data-testid="stColumn"] .stButton > button:hover {{
+            background: rgba(212,175,55,0.08) !important;
+            border-color: #d4af37 !important;
+            color: #f0d060 !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }}
+ 
+        .exp-sort-row {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 48px;
+            border-top: 1px solid rgba(212,175,55,0.07);
+            border-bottom: 1px solid rgba(212,175,55,0.07);
+            margin-top: 16px;
+        }}
+        .exp-count {{
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: rgba(212,175,55,0.4);
+        }}
+ 
+        .exp-grid-wrap {{
+            padding: 24px 48px 40px;
+        }}
+        .exp-poster {{
+            aspect-ratio: 2/3;
+            border-radius: 8px;
+            border: 1px solid rgba(212,175,55,0.15);
+            overflow: hidden;
+            margin-bottom: 8px;
+            position: relative;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+        }}
+        .exp-poster:hover {{
+            border-color: rgba(212,175,55,0.4);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+            transform: translateY(-4px);
+        }}
+        .exp-poster img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }}
+        .exp-rating {{
+            position: absolute;
+            top: 8px; left: 8px;
+            background: rgba(4,12,22,0.85);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 5px;
+            padding: 2px 7px;
+            font-size: 0.65rem;
+            color: #d4af37;
+        }}
+        .exp-rtitle {{
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.82rem;
+            color: #cdd8e0;
+            text-align: center;
+            line-height: 1.35;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }}
+ 
+        .exp-empty {{
+            padding: 56px 48px 60px;
+            text-align: center;
+        }}
+        .exp-empty-icon {{
+            font-size: 2rem;
+            color: rgba(212,175,55,0.25);
+            margin-bottom: 16px;
+        }}
+        .exp-empty-title {{
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #6a7a88;
+        }}
 
         </style>
         """,
@@ -680,7 +832,7 @@ def show_home(movies: pd.DataFrame, api_key: str):
         <div class="mood-card">Curiosity</div>
         <div class="mood-card">Adrenaline</div>
         <div class="mood-card">Reflection</div>
-        <div class="mood-card">Heartbreak</div>
+        <div class="mood-card">Sorrow</div>
         <div class="mood-card">Hope</div>
         <div class="mood-card">Mystery</div>
         <div class="mood-card">Nostalgia</div>
@@ -841,6 +993,135 @@ def show_discovery(movies, similarity, api_key):
         """, unsafe_allow_html=True)
 
 
+ 
+MOOD_OPTIONS = [
+    "Wonder", "Curiosity", "Adrenaline", "Reflection",
+    "Sorrow", "Hope", "Mystery", "Nostalgia",
+]
+ 
+GENRE_OPTIONS = [
+    "All", "Action", "Adventure", "Comedy", "Drama",
+    "Thriller", "Romance", "Science Fiction", "Horror", "Animation",
+]
+ 
+ERA_OPTIONS = ["All Time", "Classic (pre-1990)", "90s–2000s", "Modern (2010+)"]
+ 
+SORT_OPTIONS = ["Top Rated", "Newest", "Most Popular"]
+ 
+ 
+def _parse_genres(genres_json):
+    try:
+        items = _json.loads(genres_json) if isinstance(genres_json, str) else genres_json
+        return [g["name"] for g in items]
+    except Exception:
+        return []
+ 
+ 
+def show_explore(movies_full, api_key):
+    if "explore_mood" not in st.session_state:
+        st.session_state.explore_mood = None  # visual-only selection for now
+    if "explore_genre" not in st.session_state:
+        st.session_state.explore_genre = "All"
+    if "explore_sort" not in st.session_state:
+        st.session_state.explore_sort = "Top Rated"  
+
+    filtered = movies_full.copy()
+ 
+    if st.session_state.explore_genre != "All":
+        filtered = filtered[
+            filtered["genres"].apply(lambda g: st.session_state.explore_genre in _parse_genres(g))
+        ]
+ 
+    sort_map = {
+        "Top Rated": ("vote_average", False),
+        "Newest": ("release_date", False),
+        "Most Popular": ("popularity", False),
+    }
+    sort_col, _ = sort_map[st.session_state.explore_sort]
+    filtered = filtered.sort_values(sort_col, ascending=False)
+ 
+ 
+    st.markdown("""
+    <style>
+    .stApp { background-image: none !important; background-color: #060e1a !important; }
+    .stApp::before { display: none !important; }
+    [data-testid="stMainBlockContainer"] { background-color: #060e1a !important; }
+    </style>
+    """, unsafe_allow_html=True)
+ 
+    # Hero
+    st.markdown("""
+    <div class="exp-hero">
+        <div class="exp-eyebrow">Browse the collection</div>
+        <div class="exp-title">Explore Every<br>Story</div>
+        <p class="exp-sub">"Wander until something finds you."</p>
+    </div>
+    """, unsafe_allow_html=True)
+ 
+   # ── Mood filter ──
+    st.markdown('<span class="exp-filter-label">Mood</span>', unsafe_allow_html=True)
+    mood_row = st.columns(8)
+    for i, mood in enumerate(MOOD_OPTIONS):
+        with mood_row[i]:
+            is_active = st.session_state.explore_mood == mood
+            label = f"✦ {mood}" if is_active else mood
+            if st.button(label, key=f"mood_{mood}", use_container_width=True):
+                st.session_state.explore_mood = None if is_active else mood
+                st.rerun()
+
+    # ── Genre filter ──
+    st.markdown('<span class="exp-filter-label">Genre</span>', unsafe_allow_html=True)
+    genre_row1 = st.columns(5)
+    genre_row2 = st.columns(5)
+    for i, genre in enumerate(GENRE_OPTIONS):
+        row = genre_row1 if i < 5 else genre_row2
+        with row[i % 5]:
+            is_active = st.session_state.explore_genre == genre
+            label = f"✦ {genre}" if is_active else genre
+            if st.button(label, key=f"genre_{genre}", use_container_width=True):
+                st.session_state.explore_genre = genre
+                st.rerun()
+
+    # ── Sort ──
+    st.markdown(f'<div class="exp-sort-row"><span class="exp-count">{len(filtered)} films match</span></div>', unsafe_allow_html=True)
+    sort_row = st.columns([1, 1, 1, 4])
+    for i, sort_opt in enumerate(SORT_OPTIONS):
+        with sort_row[i]:
+            is_active = st.session_state.explore_sort == sort_opt
+            label = f"✦ {sort_opt}" if is_active else sort_opt
+            if st.button(label, key=f"sort_{sort_opt}", use_container_width=True):
+                st.session_state.explore_sort = sort_opt
+                st.rerun()
+ 
+    # ── Grid ─────────────────────────────────────────────────────────────
+    top_results = filtered.head(20)
+ 
+    if top_results.empty:
+        st.markdown("""
+        <div class="exp-empty">
+            <div class="exp-empty-icon">✦</div>
+            <div class="exp-empty-title">No films match these filters yet.</div>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="exp-grid-wrap">', unsafe_allow_html=True)
+        rows = [top_results.iloc[i:i+4] for i in range(0, len(top_results), 4)]
+        for row in rows:
+            cols = st.columns(4)
+            for col, (_, movie) in zip(cols, row.iterrows()):
+                with col:
+                    poster = fetch_poster(int(movie["id"]), api_key)
+                    rating = movie.get("vote_average", 0)
+                    st.markdown(f"""
+                    <div class="exp-poster">
+                        <img src="{poster}" alt="{movie['title']}" loading="lazy" />
+                        <div class="exp-rating">★ {rating:.1f}</div>
+                    </div>
+                    <div class="exp-rtitle">{movie['title']}</div>
+                    """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+
 # ============================================================================
 # MAIN APP
 # ============================================================================
@@ -872,7 +1153,7 @@ def main():
 
         st.markdown("<p style='font-size: 0.65rem; letter-spacing: 3px; color: #b0c4de; margin-bottom: 8px;'>NAVIGATE</p>", unsafe_allow_html=True)
         
-        pages = ["Home", "Discovery"]
+        pages = ["Home", "Discovery", "Explore"]
         for page in pages:
             is_active = st.session_state.current_page == page
             if st.button(page, key=f"nav_{page}", use_container_width=True):
@@ -906,6 +1187,7 @@ def main():
     movies = load_movies()
     similarity = load_similarity()
     api_key = get_api_key()
+    movies_full = load_movies_full()
 
 
     # Route to appropriate page
@@ -913,6 +1195,8 @@ def main():
         show_home(movies, api_key)
     elif st.session_state.current_page == "Discovery":
         show_discovery(movies, similarity, api_key)
+    elif st.session_state.current_page == "Explore":
+        show_explore(movies_full, api_key)
 
 
 if __name__ == "__main__":
