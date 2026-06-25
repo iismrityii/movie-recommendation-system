@@ -916,6 +916,17 @@ def apply_premium_theme():
             box-shadow: none !important;
         }}
 
+        /* Film detail buttons */
+        .fd-back-btn > button {{
+            background: transparent !important;
+            border: none !important;
+            color: rgba(212,175,55,0.5) !important;
+            font-size: 0.72rem !important;
+            letter-spacing: 2px !important;
+            padding: 0 !important;
+            font-weight: 300 !important;
+        }}
+
         </style>
         """,
         unsafe_allow_html=True,
@@ -1139,6 +1150,11 @@ def show_discovery(movies, similarity, api_key):
                     else:
                         st.session_state.watchlist.append(names[i])
                     st.rerun()
+                if st.button("View Details", key=f"fd_{i}_{names[i]}", use_container_width=True):
+                    st.session_state.selected_film = names[i]
+                    st.session_state.film_detail_source = "Discovery"
+                    st.session_state.current_page = "FilmDetail"
+                    st.rerun()
  
                 st.markdown('</div>', unsafe_allow_html=True)
  
@@ -1278,6 +1294,11 @@ def show_explore(movies_full, api_key):
                     </div>
                     <div class="exp-rtitle">{movie['title']}</div>
                     """, unsafe_allow_html=True)
+                    if st.button("View", key=f"exp_view_{movie['id']}", use_container_width=True):
+                        st.session_state.selected_film = movie["title"]
+                        st.session_state.film_detail_source = "Explore"
+                        st.session_state.current_page = "FilmDetail"
+                        st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
 def show_watchlist(movies_full, api_key):
@@ -1410,6 +1431,170 @@ def show_watchlist(movies_full, api_key):
 
     st.markdown('</div>', unsafe_allow_html=True)
 
+def show_film_detail(movies_full, movies, similarity, api_key):
+
+    st.markdown("""
+    <style>
+    .stApp { background-image: none !important; background-color: #060e1a !important; }
+    .stApp::before { display: none !important; }
+    [data-testid="stMainBlockContainer"] { background-color: #060e1a !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    title = st.session_state.get("selected_film", None)
+    if not title:
+        st.session_state.current_page = "Home"
+        st.rerun()
+
+    # Back button
+    if st.button("← Back", key="fd_back"):
+        prev = st.session_state.get("film_detail_source", "Explore")
+        st.session_state.current_page = prev
+        st.rerun()
+
+    # Get movie data from full CSV
+    match = movies_full[movies_full["title"] == title]
+    if match.empty:
+        st.error("Film not found.")
+        return
+    movie = match.iloc[0]
+
+    # Parse genres
+    genres = _parse_genres(movie.get("genres", "[]"))
+    genre_pills = "".join([
+        f'<span style="font-size:0.68rem; letter-spacing:1px; color:rgba(212,175,55,0.6); border:1px solid rgba(212,175,55,0.2); border-radius:20px; padding:4px 12px;">{g}</span>'
+        for g in genres[:4]
+    ])
+
+    # Get poster
+    movie_id = int(movie.get("id", 0))
+    poster = fetch_poster(movie_id, api_key)
+
+    # Parse stats safely
+    rating = float(movie.get("vote_average", 0))
+    runtime = int(movie.get("runtime", 0)) if str(movie.get("runtime", "")).replace(".","").isdigit() else 0
+    budget = movie.get("budget", 0)
+    revenue = movie.get("revenue", 0)
+    release = str(movie.get("release_date", ""))[:4]
+    tagline = movie.get("tagline", "")
+    overview = movie.get("overview", "No overview available.")
+    language = str(movie.get("original_language", "")).upper()
+
+    def fmt_money(val):
+        try:
+            v = int(val)
+            if v >= 1_000_000_000:
+                return f"${v/1_000_000_000:.1f}B"
+            elif v >= 1_000_000:
+                return f"${v/1_000_000:.0f}M"
+            elif v > 0:
+                return f"${v:,}"
+            else:
+                return "N/A"
+        except:
+            return "N/A"
+
+    # Watchlist state
+    in_wl = title in st.session_state.get("watchlist", [])
+
+    # Layout — poster + info
+    col_poster, col_info = st.columns([1, 2.5])
+
+    with col_poster:
+        st.image(poster, use_container_width=True)
+        st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+
+        wl_label = "★ SAVED TO WATCHLIST" if in_wl else "☆ SAVE TO WATCHLIST"
+        if st.button(wl_label, key="fd_save", use_container_width=True):
+            if in_wl:
+                st.session_state.watchlist.remove(title)
+            else:
+                if "watchlist" not in st.session_state:
+                    st.session_state.watchlist = []
+                st.session_state.watchlist.append(title)
+            st.rerun()
+
+        if st.button("FIND SIMILAR FILMS", key="fd_similar_btn", use_container_width=True):
+            st.session_state.current_page = "Discovery"
+            st.session_state["disc_select"] = title
+            st.rerun()
+
+    with col_info:
+        st.markdown(f"""
+        <div style="padding: 8px 0 0 16px;">
+            <div style="font-size:10px; letter-spacing:4px; color:rgba(212,175,55,0.5); margin-bottom:10px;">
+                {release} · {language}
+            </div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:600; color:#f0d98c; line-height:1.05; margin-bottom:6px;">
+                {title}
+            </div>
+            <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; color:#6a7a88; margin-bottom:20px;">
+                {f'"{tagline}"' if tagline else ''}
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+                <div style="display:flex; align-items:baseline; gap:4px;">
+                    <span style="font-size:1.4rem; color:#d4af37; font-weight:600;">{rating:.1f}</span>
+                    <span style="font-size:0.75rem; color:rgba(212,175,55,0.4);">/ 10</span>
+                </div>
+                <div style="width:1px; height:20px; background:rgba(212,175,55,0.15);"></div>
+                <span style="font-size:0.78rem; color:#6a7a88; letter-spacing:1px;">{runtime} MIN</span>
+                <div style="width:1px; height:20px; background:rgba(212,175,55,0.15);"></div>
+                <span style="font-size:0.78rem; color:#6a7a88; letter-spacing:1px;">{fmt_money(budget)} BUDGET</span>
+                <div style="width:1px; height:20px; background:rgba(212,175,55,0.15);"></div>
+                <span style="font-size:0.78rem; color:#6a7a88; letter-spacing:1px;">{fmt_money(revenue)} REVENUE</span>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px;">
+                {genre_pills}
+            </div>
+            <div style="font-size:10px; letter-spacing:3px; color:rgba(212,175,55,0.4); margin-bottom:10px;">OVERVIEW</div>
+            <div style="font-size:0.9rem; color:#8a9aa8; line-height:1.75; margin-bottom:28px;">
+                {overview}
+            </div>
+            <div style="height:1px; background:rgba(212,175,55,0.07); margin-bottom:24px;"></div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px;">
+                <div style="text-align:center; padding:16px; border:1px solid rgba(212,175,55,0.08); border-radius:8px;">
+                    <div style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#d4af37; margin-bottom:4px;">{rating:.1f}</div>
+                    <div style="font-size:9px; letter-spacing:2px; color:rgba(212,175,55,0.35);">RATING</div>
+                </div>
+                <div style="text-align:center; padding:16px; border:1px solid rgba(212,175,55,0.08); border-radius:8px;">
+                    <div style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#d4af37; margin-bottom:4px;">{fmt_money(revenue)}</div>
+                    <div style="font-size:9px; letter-spacing:2px; color:rgba(212,175,55,0.35);">REVENUE</div>
+                </div>
+                <div style="text-align:center; padding:16px; border:1px solid rgba(212,175,55,0.08); border-radius:8px;">
+                    <div style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#d4af37; margin-bottom:4px;">{runtime}</div>
+                    <div style="font-size:9px; letter-spacing:2px; color:rgba(212,175,55,0.35);">MINUTES</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Similar films section
+    st.markdown("""
+    <div style="padding: 0 0 12px; border-top: 1px solid rgba(212,175,55,0.07); margin-top: 16px;">
+        <div style="font-size:10px; letter-spacing:3px; color:rgba(212,175,55,0.4); margin: 24px 0 16px;">YOU MIGHT ALSO LIKE</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    try:
+        sim_names, sim_posters = recommend(title, movies, similarity, api_key)
+        sim_cols = st.columns(5)
+        for i, col in enumerate(sim_cols):
+            with col:
+                st.image(sim_posters[i], use_container_width=True)
+                st.markdown(f"""
+                <div style="font-size:0.75rem; color:#6a7a88; text-align:center; line-height:1.3; margin-bottom:6px;">
+                    {sim_names[i]}
+                </div>
+                """, unsafe_allow_html=True)
+                if st.button("View", key=f"sim_{i}_{sim_names[i]}", use_container_width=True):
+                    st.session_state.selected_film = sim_names[i]
+                    st.session_state.film_detail_source = "FilmDetail"
+                    st.rerun()
+    except Exception:
+        st.markdown("<div style='color:rgba(212,175,55,0.3); font-size:0.8rem;'>Similar films unavailable.</div>", unsafe_allow_html=True)
+
+    st.markdown("<div style='height:60px;'></div>", unsafe_allow_html=True)
+
 
 # ============================================================================
 # MAIN APP
@@ -1489,6 +1674,8 @@ def main():
         show_explore(movies_full, api_key)
     elif st.session_state.current_page == "Watchlist":
         show_watchlist(movies_full, api_key)
+    elif st.session_state.current_page == "FilmDetail":
+        show_film_detail(movies_full, movies, similarity, api_key)
 
 
 if __name__ == "__main__":
