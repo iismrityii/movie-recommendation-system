@@ -621,6 +621,7 @@ def apply_premium_theme():
             text-transform: uppercase;
             color: rgba(212,175,55,0.6);
             margin: 0 0 10px;
+            display: block;
         }}
         .exp-hero .exp-title {{
             font-family: 'Cormorant Garamond', serif !important;
@@ -755,6 +756,164 @@ def apply_premium_theme():
             font-size: 1.2rem;
             font-style: italic;
             color: #6a7a88;
+        }}
+
+        /* watchlist page specific styles */
+        .wl-hero {{
+            position: relative;
+            padding: 40px 48px 28px;
+        }}
+        .wl-eyebrow {{
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.6);
+            margin: 0 0 10px;
+        }}
+        .wl-hero .wl-title {{
+            font-family: 'Cormorant Garamond', serif !important;
+            font-weight: 600 !important;
+            font-size: 2.6rem;
+            color: #f0d98c !important;
+            line-height: 1.1;
+            margin: 0 0 12px;
+        }}
+        .wl-sub {{
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: #8a9aa8;
+            margin: 0;
+        }}
+        .wl-stats-row {{
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            padding: 16px 48px;
+            border-top: 1px solid rgba(212,175,55,0.07);
+            border-bottom: 1px solid rgba(212,175,55,0.07);
+            margin-bottom: 8px;
+        }}
+        .wl-stat {{
+            text-align: center;
+        }}
+        .wl-stat-num {{
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: #d4af37;
+            line-height: 1;
+        }}
+        .wl-stat-lbl {{
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #3a5060;
+            margin-top: 3px;
+        }}
+        .wl-grid-wrap {{
+            padding: 20px 48px 40px;
+        }}
+        .wl-poster {{
+            aspect-ratio: 2/3;
+            border-radius: 8px;
+            border: 1px solid rgba(212,175,55,0.15);
+            overflow: hidden;
+            margin-bottom: 8px;
+            position: relative;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+        }}
+        .wl-poster:hover {{
+            border-color: rgba(212,175,55,0.4);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+            transform: translateY(-4px);
+        }}
+        .wl-poster img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }}
+        .wl-rating {{
+            position: absolute;
+            top: 8px; left: 8px;
+            background: rgba(4,12,22,0.85);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 5px;
+            padding: 2px 7px;
+            font-size: 0.65rem;
+            color: #d4af37;
+        }}
+        .wl-title-text {{
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.82rem;
+            color: #cdd8e0;
+            text-align: center;
+            line-height: 1.35;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+        }}
+        .wl-empty {{
+            padding: 80px 48px;
+            text-align: center;
+        }}
+        .wl-empty-icon {{
+            font-size: 2.5rem;
+            color: rgba(212,175,55,0.15);
+            margin-bottom: 20px;
+        }}
+        .wl-empty-title {{
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #4a6070;
+            margin-bottom: 10px;
+        }}
+        .wl-empty-hint {{
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(212,175,55,0.25);
+            margin-bottom: 32px;
+        }}
+        /* remove button styling */
+        .wl-grid-wrap div[data-testid="stColumn"] .stButton > button {{
+            width: 100% !important;
+            font-size: 0.68rem !important;
+            letter-spacing: 1px !important;
+            padding: 6px 0 !important;
+            border: 1px solid rgba(212,175,55,0.2) !important;
+            background: transparent !important;
+            color: rgba(212,175,55,0.5) !important;
+            border-radius: 5px !important;
+            font-weight: 300 !important;
+        }}
+        .wl-grid-wrap div[data-testid="stColumn"] .stButton > button:hover {{
+            border-color: rgba(220,60,60,0.5) !important;
+            color: rgba(220,100,100,0.9) !important;
+            background: rgba(220,60,60,0.06) !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }}
+
+        /* Watchlist note input */
+        .wl-grid-wrap .stTextInput > div > div > input {{
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 1px solid rgba(212,175,55,0.15) !important;
+            border-radius: 0 !important;
+            color: #6a7a88 !important;
+            font-size: 0.7rem !important;
+            font-style: italic !important;
+            padding: 4px 0 !important;
+            text-align: center !important;
+        }}
+        .wl-grid-wrap .stTextInput > div > div > input:focus {{
+            border-bottom-color: rgba(212,175,55,0.4) !important;
+            box-shadow: none !important;
         }}
 
         </style>
@@ -892,7 +1051,7 @@ def show_discovery(movies, similarity, api_key):
     <div class="disc-hero">
         <div class="disc-glow"></div>
         <div class="disc-eyebrow">The Discovery Engine</div>
-        <h2 class="disc-title">Find Your<br>Next Chapter</h2>
+        <div class="disc-title">Find Your<br>Next Chapter</div>
         <p class="disc-sub">"Find the experience you are seeking."</p>
     </div>
     """, unsafe_allow_html=True)
@@ -1121,6 +1280,136 @@ def show_explore(movies_full, api_key):
                     """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
+def show_watchlist(movies_full, api_key):
+
+    if "watchlist" not in st.session_state:
+        st.session_state.watchlist = []
+    if "wl_notes" not in st.session_state:
+        st.session_state.wl_notes = {}
+
+    st.markdown("""
+    <style>
+    .stApp { background-image: none !important; background-color: #060e1a !important; }
+    .stApp::before { display: none !important; }
+    [data-testid="stMainBlockContainer"] { background-color: #060e1a !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    count = len(st.session_state.watchlist)
+    notes_count = sum(1 for n in st.session_state.wl_notes.values() if n.strip())
+
+    # Hero
+    st.markdown(f"""
+    <div class="wl-hero">
+        <div class="wl-eyebrow">Your Collection</div>
+        <div class="wl-title">My Watchlist</div>
+        <p class="wl-sub">"Films worth your time."</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Stats bar
+    st.markdown(f"""
+    <div class="wl-stats-row">
+        <div class="wl-stat">
+            <div class="wl-stat-num">{count}</div>
+            <div class="wl-stat-lbl">FILMS SAVED</div>
+        </div>
+        <div class="wl-stat">
+            <div class="wl-stat-num">{notes_count}</div>
+            <div class="wl-stat-lbl">NOTES WRITTEN</div>
+        </div>
+        <div class="wl-stat">
+            <div class="wl-stat-num" style="font-size: 1rem; padding-top: 4px;">{"Discovery · Explore" if count > 0 else "—"}</div>
+            <div class="wl-stat-lbl">SOURCES</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Tabs row
+    st.markdown("""
+    <div style="display: flex; gap: 0; padding: 0 48px; border-bottom: 1px solid rgba(212,175,55,0.08); margin-bottom: 8px;">
+        <div style="font-size: 0.72rem; letter-spacing: 2px; color: #d4af37; padding: 12px 0; margin-right: 32px; border-bottom: 2px solid #d4af37;">ALL FILMS</div>
+        <div style="font-size: 0.72rem; letter-spacing: 2px; color: rgba(212,175,55,0.3); padding: 12px 0; margin-right: 32px; border-bottom: 2px solid transparent;">WATCHED</div>
+        <div style="font-size: 0.72rem; letter-spacing: 2px; color: rgba(212,175,55,0.3); padding: 12px 0; border-bottom: 2px solid transparent;">UNWATCHED</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Sort row
+    st.markdown("""
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 48px 0;">
+        <span style="font-size: 10px; letter-spacing: 2px; color: rgba(212,175,55,0.35);">SORT BY</span>
+        <div style="display: flex; gap: 8px;">
+            <span style="font-size: 0.7rem; letter-spacing: 1px; color: #d4af37; border: 1px solid #d4af37; border-radius: 20px; padding: 4px 12px; background: rgba(212,175,55,0.08);">DATE ADDED</span>
+            <span style="font-size: 0.7rem; letter-spacing: 1px; color: rgba(212,175,55,0.4); border: 1px solid rgba(212,175,55,0.2); border-radius: 20px; padding: 4px 12px;">RATING</span>
+            <span style="font-size: 0.7rem; letter-spacing: 1px; color: rgba(212,175,55,0.4); border: 1px solid rgba(212,175,55,0.2); border-radius: 20px; padding: 4px 12px;">A–Z</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if not st.session_state.watchlist:
+        st.markdown("""
+        <div class="wl-empty">
+            <div class="wl-empty-icon">✦</div>
+            <div class="wl-empty-title">Your watchlist is empty.</div>
+            <div class="wl-empty-hint">Save films from Discovery or Explore</div>
+        </div>
+        """, unsafe_allow_html=True)
+        return  
+    
+    col_info, col_clear = st.columns([4, 1])
+    with col_clear:
+        if st.button("✕ Clear All", use_container_width=True):
+            st.session_state.watchlist = []
+            st.session_state.wl_notes = {}
+            st.rerun()
+
+    # Grid
+    st.markdown('<div class="wl-grid-wrap">', unsafe_allow_html=True)
+
+    titles = st.session_state.watchlist.copy()
+    rows = [titles[i:i+5] for i in range(0, len(titles), 5)]
+
+    for row_titles in rows:
+        cols = st.columns(5)
+        for col, title in zip(cols, row_titles):
+            with col:
+                match = movies_full[movies_full["title"] == title]
+                if not match.empty:
+                    movie = match.iloc[0]
+                    poster = fetch_poster(int(movie["id"]), api_key)
+                    rating = movie.get("vote_average", 0)
+                else:
+                    poster = FALLBACK_POSTER
+                    rating = 0
+
+                st.markdown(f"""
+                <div class="wl-poster">
+                    <img src="{poster}" alt="{title}" loading="lazy" />
+                    <div class="wl-rating">★ {rating:.1f}</div>
+                </div>
+                <div class="wl-title-text">{title}</div>
+                """, unsafe_allow_html=True)
+
+                note_key = f"note_{title}"
+                current_note = st.session_state.wl_notes.get(title, "")
+                new_note = st.text_input(
+                    "Note",
+                    value=current_note,
+                    placeholder="Why you saved this...",
+                    key=note_key,
+                    label_visibility="collapsed",
+                )
+                if new_note != current_note:
+                    st.session_state.wl_notes[title] = new_note
+
+                if st.button("✕ Remove", key=f"remove_{title}", use_container_width=True):
+                    st.session_state.watchlist.remove(title)
+                    if title in st.session_state.wl_notes:
+                        del st.session_state.wl_notes[title]
+                    st.rerun()
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
 
 # ============================================================================
 # MAIN APP
@@ -1153,10 +1442,11 @@ def main():
 
         st.markdown("<p style='font-size: 0.65rem; letter-spacing: 3px; color: #b0c4de; margin-bottom: 8px;'>NAVIGATE</p>", unsafe_allow_html=True)
         
-        pages = ["Home", "Discovery", "Explore"]
+        pages = ["Home", "Discovery", "Explore", "Watchlist"]
         for page in pages:
             is_active = st.session_state.current_page == page
-            if st.button(page, key=f"nav_{page}", use_container_width=True):
+            label = f"Watchlist ({len(st.session_state.get('watchlist', []))})" if page == "Watchlist" else page
+            if st.button(label, key=f"nav_{page}", use_container_width=True):
                 st.session_state.current_page = page
                 st.rerun()
 
@@ -1197,6 +1487,8 @@ def main():
         show_discovery(movies, similarity, api_key)
     elif st.session_state.current_page == "Explore":
         show_explore(movies_full, api_key)
+    elif st.session_state.current_page == "Watchlist":
+        show_watchlist(movies_full, api_key)
 
 
 if __name__ == "__main__":
