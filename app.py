@@ -1079,11 +1079,15 @@ def show_recommend(movies, similarity, api_key):
     """, unsafe_allow_html=True)
  
     st.markdown('<div class="disc-search-wrap">', unsafe_allow_html=True)
+    default_movie = st.session_state.pop("recent_clicked", None)
     col_select, col_btn = st.columns([3, 1])
     with col_select:
+        movie_list = movies["title"].values.tolist()
+        default_idx = movie_list.index(default_movie) if default_movie and default_movie in movie_list else 0
         selected_movie = st.selectbox(
             label="",
-            options=movies["title"].values,
+            options=movie_list,
+            index=default_idx,
             placeholder="Search for a film...",
             label_visibility="collapsed",
             key="disc_select",
@@ -1099,9 +1103,8 @@ def show_recommend(movies, similarity, api_key):
         for i, title in enumerate(st.session_state.recent_searches[-4:]):
             with chip_cols[i]:
                 if st.button(title, key=f"recent_{i}_{title}"):
-                    st.session_state["disc_select"] = title
-                    find_btn = True
-                    selected_movie = title
+                    st.session_state["recent_clicked"] = title
+                    st.rerun()
  
     # Results
     if find_btn and selected_movie:
