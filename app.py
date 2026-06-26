@@ -8,6 +8,7 @@ import pandas as pd
 import requests
 import streamlit as st
 import json as _json
+import streamlit.components.v1 as components
 
 try:
     from dotenv import load_dotenv
@@ -48,7 +49,7 @@ def load_movies_full() -> pd.DataFrame:
 
 @st.cache_data(show_spinner=False)
 def load_movies() -> pd.DataFrame:
-    with open("movie_dict.pkl", "rb") as f:
+    with open("movie_with_moods.pkl", "rb") as f:
         movies_dict = pickle.load(f)
     return pd.DataFrame(movies_dict)
 
@@ -1023,7 +1024,7 @@ def show_home(movies: pd.DataFrame, api_key: str):
     )
     with col2:
         if st.button("BEGIN YOUR JOURNEY ↗", use_container_width=True, type="primary"):
-            st.session_state.current_page = "Discovery"
+            st.session_state.current_page = "Recommend"
             st.rerun()
 
     #Trending section — pick 6 random movies
@@ -1042,7 +1043,7 @@ def show_home(movies: pd.DataFrame, api_key: str):
     st.markdown(trending_html, unsafe_allow_html=True)
 
 
-def show_discovery(movies, similarity, api_key):
+def show_recommend(movies, similarity, api_key):
  
     if "recent_searches" not in st.session_state:
         st.session_state.recent_searches = []
@@ -1061,7 +1062,7 @@ def show_discovery(movies, similarity, api_key):
     st.markdown("""
     <div class="disc-hero">
         <div class="disc-glow"></div>
-        <div class="disc-eyebrow">The Discovery Engine</div>
+        <div class="disc-eyebrow">The Recommendation Engine</div>
         <div class="disc-title">Find Your<br>Next Chapter</div>
         <p class="disc-sub">"Find the experience you are seeking."</p>
     </div>
@@ -1152,7 +1153,7 @@ def show_discovery(movies, similarity, api_key):
                     st.rerun()
                 if st.button("View Details", key=f"fd_{i}_{names[i]}", use_container_width=True):
                     st.session_state.selected_film = names[i]
-                    st.session_state.film_detail_source = "Discovery"
+                    st.session_state.film_detail_source = "Recommend"
                     st.session_state.current_page = "FilmDetail"
                     st.rerun()
  
@@ -1192,7 +1193,7 @@ def _parse_genres(genres_json):
         return []
  
  
-def show_explore(movies_full, api_key):
+def show_explore(movies_full, movies, api_key):
     if "explore_mood" not in st.session_state:
         st.session_state.explore_mood = None  # visual-only selection for now
     if "explore_genre" not in st.session_state:
@@ -1206,15 +1207,7 @@ def show_explore(movies_full, api_key):
         filtered = filtered[
             filtered["genres"].apply(lambda g: st.session_state.explore_genre in _parse_genres(g))
         ]
- 
-    sort_map = {
-        "Top Rated": ("vote_average", False),
-        "Newest": ("release_date", False),
-        "Most Popular": ("popularity", False),
-    }
-    sort_col, _ = sort_map[st.session_state.explore_sort]
-    filtered = filtered.sort_values(sort_col, ascending=False)
- 
+  
  
     st.markdown("""
     <style>
@@ -1256,6 +1249,38 @@ def show_explore(movies_full, api_key):
             if st.button(label, key=f"genre_{genre}", use_container_width=True):
                 st.session_state.explore_genre = genre
                 st.rerun()
+    
+    # Rating filter from sidebar
+    min_rating = st.session_state.get('min_rating', 0)
+    filtered = filtered[filtered['vote_average'] >= min_rating]
+
+    # Era filter
+    era = st.session_state.get('era_filter', 'All Time')
+    if era == 'Classic (pre-1990)':
+        filtered = filtered[filtered['release_date'] < '1990']
+    elif era == '90s–2000s':
+        filtered = filtered[(filtered['release_date'] >= '1990') & (filtered['release_date'] < '2010')]
+    elif era == 'Modern (2010+)':
+        filtered = filtered[filtered['release_date'] >= '2010']
+
+    if st.session_state.explore_mood:
+        mood_col = f"mood_{st.session_state.explore_mood.lower()}"
+        if mood_col in movies.columns:
+            mood_scores = movies[["movie_id", mood_col]].copy()
+            mood_scores = mood_scores.rename(columns={"movie_id": "id"})
+            filtered = filtered.merge(mood_scores, on="id", how="left")
+            filtered = filtered[filtered[mood_col] > 0]
+            filtered = filtered.sort_values(mood_col, ascending=False)
+        else:
+            filtered = filtered.sort_values("vote_average", ascending=False)
+    else:
+        sort_map = {
+            "Top Rated": ("vote_average", False),
+            "Newest": ("release_date", False),
+            "Most Popular": ("popularity", False),
+        }
+        sort_col, asc = sort_map[st.session_state.explore_sort]
+        filtered = filtered.sort_values(sort_col, ascending=asc)
 
     # ── Sort ──
     st.markdown(f'<div class="exp-sort-row"><span class="exp-count">{len(filtered)} films match</span></div>', unsafe_allow_html=True)
@@ -1340,7 +1365,7 @@ def show_watchlist(movies_full, api_key):
             <div class="wl-stat-lbl">NOTES WRITTEN</div>
         </div>
         <div class="wl-stat">
-            <div class="wl-stat-num" style="font-size: 1rem; padding-top: 4px;">{"Discovery · Explore" if count > 0 else "—"}</div>
+            <div class="wl-stat-num" style="font-size: 1rem; padding-top: 4px;">{"Recommend · Explore" if count > 0 else "—"}</div>
             <div class="wl-stat-lbl">SOURCES</div>
         </div>
     </div>
@@ -1372,7 +1397,7 @@ def show_watchlist(movies_full, api_key):
         <div class="wl-empty">
             <div class="wl-empty-icon">✦</div>
             <div class="wl-empty-title">Your watchlist is empty.</div>
-            <div class="wl-empty-hint">Save films from Discovery or Explore</div>
+            <div class="wl-empty-hint">Save films from Recommendation or Explore</div>
         </div>
         """, unsafe_allow_html=True)
         return  
@@ -1432,6 +1457,7 @@ def show_watchlist(movies_full, api_key):
     st.markdown('</div>', unsafe_allow_html=True)
 
 def show_film_detail(movies_full, movies, similarity, api_key):
+    components.html("<script>window.parent.scrollTo(0, 0);</script>", height=0)
 
     st.markdown("""
     <style>
@@ -1515,8 +1541,8 @@ def show_film_detail(movies_full, movies, similarity, api_key):
             st.rerun()
 
         if st.button("FIND SIMILAR FILMS", key="fd_similar_btn", use_container_width=True):
-            st.session_state.current_page = "Discovery"
-            st.session_state["disc_select"] = title
+            st.session_state.current_page = "Recommend"
+            st.session_state["rec_select"] = title
             st.rerun()
 
     with col_info:
@@ -1627,7 +1653,7 @@ def main():
 
         st.markdown("<p style='font-size: 0.65rem; letter-spacing: 3px; color: #b0c4de; margin-bottom: 8px;'>NAVIGATE</p>", unsafe_allow_html=True)
         
-        pages = ["Home", "Discovery", "Explore", "Watchlist"]
+        pages = ["Home", "Recommend", "Explore", "Watchlist"]
         for page in pages:
             is_active = st.session_state.current_page == page
             label = f"Watchlist ({len(st.session_state.get('watchlist', []))})" if page == "Watchlist" else page
@@ -1659,6 +1685,11 @@ def main():
         st.session_state.era_filter = era_filter
 
     # Load data
+    @st.cache_data(show_spinner=False)
+    def load_movies():
+        with open("movies_with_moods.pkl", "rb") as f:
+            return pickle.load(f)
+
     movies = load_movies()
     similarity = load_similarity()
     api_key = get_api_key()
@@ -1668,10 +1699,10 @@ def main():
     # Route to appropriate page
     if st.session_state.current_page == "Home":
         show_home(movies, api_key)
-    elif st.session_state.current_page == "Discovery":
-        show_discovery(movies, similarity, api_key)
+    elif st.session_state.current_page == "Recommend":
+        show_recommend(movies, similarity, api_key)
     elif st.session_state.current_page == "Explore":
-        show_explore(movies_full, api_key)
+        show_explore(movies_full, movies, api_key)
     elif st.session_state.current_page == "Watchlist":
         show_watchlist(movies_full, api_key)
     elif st.session_state.current_page == "FilmDetail":
