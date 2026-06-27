@@ -1098,7 +1098,7 @@ def show_recommend(movies, similarity, api_key):
  
     # Recent searches — real buttons styled as chips
     if st.session_state.recent_searches:
-        st.markdown('<div class="recent-row"><span class="recent-label">Recent</span></div>', unsafe_allow_html=True)
+        st.markdown('<div class="recent-row"><span class="recent-label">Your searches</span></div>', unsafe_allow_html=True)
         chip_cols = st.columns(len(st.session_state.recent_searches[-4:]) + 4)
         for i, title in enumerate(st.session_state.recent_searches[-4:]):
             with chip_cols[i]:
@@ -1117,11 +1117,17 @@ def show_recommend(movies, similarity, api_key):
         with st.spinner("Weaving your cinematic journey..."):
             try:
                 names, posters = recommend(selected_movie, movies, similarity, api_key)
+                st.session_state.last_names = names
+                st.session_state.last_posters = posters
             except Exception as ex:
                 st.error(f"❌ Could not generate recommendations: {ex}")
                 st.markdown('</div>', unsafe_allow_html=True)
                 st.stop()
- 
+
+    if "last_names" in st.session_state and "last_posters" in st.session_state:
+        names = st.session_state.last_names
+        posters = st.session_state.last_posters
+    
         st.markdown("""
         <div class="results-header">
             <span class="results-label">Your next chapter</span>
@@ -1482,10 +1488,10 @@ def show_film_detail(movies_full, movies, similarity, api_key):
         st.rerun()
 
     # Get movie data from full CSV
-    match = movies_full[movies_full["title"] == title]
+    match = movies_full[movies_full["title"].str.strip() == str(title).strip()]
     if match.empty:
-        st.error("Film not found.")
-        return
+        # try partial match
+        match = movies_full[movies_full["title"].str.contains(str(title).strip(), case=False, na=False)]
     movie = match.iloc[0]
 
     # Parse genres
