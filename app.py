@@ -383,11 +383,15 @@ def apply_premium_theme():
  
         /* align selectbox + button in the same row, same height */
         .disc-search-wrap [data-testid="stHorizontalBlock"] {{
-            align-items: stretch;
-            gap: 12px;
+            align-items: center !important;
+            gap: 12px !important;
+        }}
+
+        .disc-search-wrap [data-testid="stColumn"] {{
+            padding: 0 !important;
         }}
         .disc-search-wrap .stSelectbox {{
-            height: 100%;
+            margin-bottom: 0 !important;
         }}
         .disc-search-wrap .stSelectbox > div > div {{
             background: #0a1620;
@@ -399,9 +403,10 @@ def apply_premium_theme():
             color: #cdd8e0;
         }}
         .disc-search-wrap .stButton {{
-            height: 100%;
-            display: flex;
-            align-items: stretch;
+            margin-bottom: 0 !important;
+            display: flex !important;
+            align-items: stretch !important;
+            height: 46px !important;
         }}
         .disc-search-wrap .stButton > button {{
             width: 100%;
@@ -412,6 +417,8 @@ def apply_premium_theme():
             font-size: 0.8rem;
             letter-spacing: 2px;
             border-radius: 6px;
+            margin-top: 0 !important;
+            padding: 0 !important;
         }}
  
         .recent-row {{
@@ -654,26 +661,28 @@ def apply_premium_theme():
         }}
  
         /* Explore pill buttons — nowrap is critical */
-        .exp-filter-section div[data-testid="stColumn"] {{
-            padding: 0 4px !important;
-            flex: 0 0 auto !important;
-            width: auto !important;
-            min-width: unset !important;
+        .exp-filter-section [data-testid="stHorizontalBlock"] {{
+            gap: 6px !important;
+            flex-wrap: wrap !important;
         }}
-        .exp-filter-section div[data-testid="stColumn"] .stButton > button {{
+        .exp-filter-section [data-testid="stColumn"] {{
+            min-width: 80px !important;
+            flex: 1 1 80px !important;
+        }}
+        .exp-filter-section [data-testid="stColumn"] .stButton > button {{
             white-space: nowrap !important;
-            width: auto !important;
-            min-width: unset !important;
-            padding: 6px 14px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
             border-radius: 30px !important;
             border: 1px solid rgba(212,175,55,0.3) !important;
             background: transparent !important;
             color: #d4af37 !important;
-            font-size: 0.78rem !important;
+            font-size: clamp(0.6rem, 1vw, 0.78rem) !important;
             letter-spacing: 1px !important;
-            height: 34px !important;
-            line-height: 1 !important;
+            padding: 6px 8px !important;
+            height: 36px !important;
             font-weight: 300 !important;
+            width: 100% !important;
         }}
         .exp-filter-section div[data-testid="stColumn"] .stButton > button:hover {{
             background: rgba(212,175,55,0.08) !important;
@@ -926,6 +935,195 @@ def apply_premium_theme():
             letter-spacing: 2px !important;
             padding: 0 !important;
             font-weight: 300 !important;
+        }}
+
+        /* ============================================================
+   GLOBAL RESPONSIVE SYSTEM
+   ============================================================ */
+
+        /* Base fluid layout */
+        [data-testid="stMainBlockContainer"] {{
+            max-width: 100% !important;
+            padding-left: 2vw !important;
+            padding-right: 2vw !important;
+        }}
+
+        /* Fluid typography */
+        html {{
+            font-size: clamp(12px, 1.2vw, 16px);
+        }}
+
+        /* Hero title scales with screen */
+        .hero h1 {{
+            font-size: clamp(2rem, 6vw, 5rem) !important;
+        }}
+        .disc-title, .exp-title, .wl-title {{
+            font-size: clamp(1.6rem, 4vw, 2.6rem) !important;
+        }}
+
+        /* Pill buttons — flexbox wrap, never clipped */
+        .pill-row {{
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            padding: 8px 0 16px !important;
+            width: 100% !important;
+        }}
+
+        /* All buttons inside pill-row: auto width, never stretch */
+        .pill-row div[data-testid="stColumn"] {{
+            flex: 0 0 auto !important;
+            width: auto !important;
+            min-width: unset !important;
+            padding: 0 !important;
+        }}
+        .pill-row div[data-testid="stColumn"] .stButton > button {{
+            white-space: nowrap !important;
+            width: auto !important;
+            min-width: unset !important;
+            padding: 6px 16px !important;
+            border-radius: 30px !important;
+            border: 1px solid rgba(212,175,55,0.3) !important;
+            background: transparent !important;
+            color: #d4af37 !important;
+            font-size: clamp(0.6rem, 1vw, 0.78rem) !important;
+            letter-spacing: 1px !important;
+            height: auto !important;
+            font-weight: 300 !important;
+            transform: none !important;
+        }}
+        .pill-row div[data-testid="stColumn"] .stButton > button:hover {{
+            background: rgba(212,175,55,0.08) !important;
+            border-color: #d4af37 !important;
+            color: #f0d060 !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }}
+
+        /* Mood cards on home — fluid wrap */
+        .mood-grid {{
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: clamp(8px, 1.5vw, 16px) !important;
+            justify-content: center !important;
+        }}
+        .mood-card {{
+            padding: clamp(12px, 1.5vw, 20px) clamp(16px, 2vw, 32px) !important;
+            font-size: clamp(0.8rem, 1.2vw, 1.1rem) !important;
+        }}
+
+        /* Hero section */
+        .hero {{
+            padding: clamp(32px, 6vw, 80px) clamp(16px, 3vw, 32px) !important;
+        }}
+
+        /* Disc/Exp/WL hero sections */
+        .disc-hero, .exp-hero, .wl-hero {{
+            padding: clamp(24px, 4vw, 40px) clamp(16px, 4vw, 48px) clamp(16px, 3vw, 28px) !important;
+        }}
+
+        /* Search wrap */
+        .disc-search-wrap {{
+            padding: 8px clamp(16px, 4vw, 48px) 4px !important;
+        }}
+
+        /* Filter section */
+        .exp-filter-section {{
+            padding: 8px clamp(16px, 4vw, 48px) 4px !important;
+        }}
+
+        /* Grid wraps */
+        .exp-grid-wrap, .wl-grid-wrap {{
+            padding: clamp(12px, 2vw, 24px) clamp(16px, 4vw, 48px) clamp(20px, 4vw, 40px) !important;
+        }}
+
+        /* Results header */
+        .results-header {{
+            padding: clamp(16px, 2vw, 28px) clamp(16px, 4vw, 48px) clamp(10px, 1.5vw, 18px) !important;
+        }}
+
+        /* Stats row */
+        .wl-stats-row {{
+            padding: clamp(12px, 2vw, 16px) clamp(16px, 4vw, 48px) !important;
+            gap: clamp(16px, 3vw, 32px) !important;
+        }}
+
+        /* Sort row */
+        .exp-sort-row {{
+            padding: clamp(12px, 2vw, 20px) clamp(16px, 4vw, 48px) !important;
+        }}
+
+        /* Recent row */
+        .recent-row {{
+            padding: clamp(8px, 1.5vw, 16px) clamp(16px, 4vw, 48px) clamp(4px, 1vw, 8px) !important;
+        }}
+
+        /* ── MEDIA QUERIES ── */
+
+        /* Large screens (1400px+) — no change, defaults apply */
+
+        /* Standard laptop (1200px) */
+        @media (max-width: 1200px) {{
+            .hero h1 {{ font-size: clamp(2rem, 5vw, 4rem) !important; }}
+            .exp-grid-wrap, .wl-grid-wrap {{ padding: 16px 24px 32px !important; }}
+            .disc-search-wrap {{ padding: 8px 24px 4px !important; }}
+        }}
+
+        /* Small laptop / large tablet (992px) */
+        @media (max-width: 992px) {{
+            .disc-hero, .exp-hero, .wl-hero {{ padding: 28px 24px 20px !important; }}
+            .exp-filter-section {{ padding: 8px 24px 4px !important; }}
+            .exp-sort-row {{ padding: 12px 24px !important; }}
+            .results-header {{ padding: 16px 24px 10px !important; }}
+            .wl-stats-row {{ flex-wrap: wrap !important; gap: 12px !important; }}
+        }}
+
+        /* Tablet (768px) */
+        @media (max-width: 768px) {{
+            .hero {{ padding: 32px 16px !important; }}
+            .hero h1 {{ font-size: 2.2rem !important; letter-spacing: 2px !important; }}
+            .disc-title, .exp-title, .wl-title {{ font-size: 1.8rem !important; }}
+            .disc-hero, .exp-hero, .wl-hero {{ padding: 20px 16px !important; }}
+            .disc-search-wrap {{ padding: 8px 16px 4px !important; }}
+            .exp-filter-section {{ padding: 8px 16px 4px !important; }}
+            .exp-grid-wrap, .wl-grid-wrap {{ padding: 12px 16px 24px !important; }}
+            .exp-sort-row {{ padding: 10px 16px !important; }}
+            .results-header {{ padding: 12px 16px 8px !important; }}
+            .recent-row {{ padding: 8px 16px 4px !important; }}
+            .philosophy-section {{ padding: 24px 16px !important; }}
+            .philosophy-section p {{ font-size: 1rem !important; }}
+            .wl-stats-row {{ padding: 12px 16px !important; }}
+            .mood-card {{ padding: 12px 16px !important; font-size: 0.85rem !important; }}
+        }}
+
+        /* Mobile (480px) */
+        @media (max-width: 480px) {{
+            .hero h1 {{ font-size: 1.8rem !important; letter-spacing: 1px !important; }}
+            .disc-title, .exp-title, .wl-title {{ font-size: 1.4rem !important; }}
+            .disc-sub, .exp-sub, .wl-sub {{ font-size: 0.85rem !important; }}
+            .disc-eyebrow, .exp-eyebrow, .wl-eyebrow {{ font-size: 9px !important; letter-spacing: 2px !important; }}
+            .mood-card {{ padding: 10px 14px !important; font-size: 0.78rem !important; }}
+            .exp-grid-wrap, .wl-grid-wrap {{ padding: 8px 12px 16px !important; }}
+            .wl-stat-num {{ font-size: 1.2rem !important; }}
+        }}
+
+        /* Prevent any button text from ever wrapping */
+        .stButton > button {{
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }}
+
+        /* Sidebar responsive */
+        @media (max-width: 768px) {{
+            [data-testid="stSidebar"] {{
+                width: 200px !important;
+                min-width: 200px !important;
+            }}
+            [data-testid="stSidebar"] .stButton > button {{
+                font-size: 0.75rem !important;
+                letter-spacing: 1px !important;
+            }}
         }}
 
         </style>
@@ -1237,9 +1435,9 @@ def show_explore(movies_full, movies, api_key):
  
    # ── Mood filter ──
     st.markdown('<span class="exp-filter-label">Mood</span>', unsafe_allow_html=True)
-    mood_row = st.columns(8)
+    mood_cols = st.columns(4)
     for i, mood in enumerate(MOOD_OPTIONS):
-        with mood_row[i]:
+        with mood_cols[i % 4]:
             is_active = st.session_state.explore_mood == mood
             label = f"✦ {mood}" if is_active else mood
             if st.button(label, key=f"mood_{mood}", use_container_width=True):
@@ -1248,11 +1446,9 @@ def show_explore(movies_full, movies, api_key):
 
     # ── Genre filter ──
     st.markdown('<span class="exp-filter-label">Genre</span>', unsafe_allow_html=True)
-    genre_row1 = st.columns(5)
-    genre_row2 = st.columns(5)
+    genre_cols = st.columns(5)
     for i, genre in enumerate(GENRE_OPTIONS):
-        row = genre_row1 if i < 5 else genre_row2
-        with row[i % 5]:
+        with genre_cols[i % 5]:
             is_active = st.session_state.explore_genre == genre
             label = f"✦ {genre}" if is_active else genre
             if st.button(label, key=f"genre_{genre}", use_container_width=True):
@@ -1292,10 +1488,9 @@ def show_explore(movies_full, movies, api_key):
         filtered = filtered.sort_values(sort_col, ascending=asc)
 
     # ── Sort ──
-    st.markdown(f'<div class="exp-sort-row"><span class="exp-count">{len(filtered)} films match</span></div>', unsafe_allow_html=True)
-    sort_row = st.columns([1, 1, 1, 4])
+    sort_cols = st.columns(3)
     for i, sort_opt in enumerate(SORT_OPTIONS):
-        with sort_row[i]:
+        with sort_cols[i]:
             is_active = st.session_state.explore_sort == sort_opt
             label = f"✦ {sort_opt}" if is_active else sort_opt
             if st.button(label, key=f"sort_{sort_opt}", use_container_width=True):
