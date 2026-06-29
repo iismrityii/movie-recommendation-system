@@ -1132,7 +1132,30 @@ def apply_premium_theme():
             }}
         }}
 
-        
+        /* Home mood buttons styled as original pill cards */
+        .home-mood-row div[data-testid="stColumn"] .stButton > button {{
+            border-radius: 20px !important;
+            border: 1px solid rgba(212,175,55,0.2) !important;
+            background: rgba(10, 20, 35, 0.4) !important;
+            color: #d4af37 !important;
+            font-family: 'Cormorant Garamond', serif !important;
+            font-size: 1.1rem !important;
+            padding: 20px 32px !important;
+            backdrop-filter: blur(8px) !important;
+            transition: all 0.4s ease !important;
+            height: auto !important;
+            white-space: nowrap !important;
+            letter-spacing: 0 !important;
+            font-weight: 400 !important;
+        }}
+        .home-mood-row div[data-testid="stColumn"] .stButton > button:hover {{
+            background: rgba(212,175,55,0.1) !important;
+            transform: translateY(-4px) !important;
+            box-shadow: 0 8px 24px rgba(212,175,55,0.15) !important;
+            border-color: rgba(212,175,55,0.4) !important;
+            color: #d4af37 !important;
+            border: 1px solid rgba(212,175,55,0.4) !important;
+        }}
 
         </style>
         """,
@@ -1202,23 +1225,18 @@ def show_home(movies: pd.DataFrame, api_key: str):
 )
 
     st.markdown("<h3 style='text-align: center; margin-bottom: 24px; color: #d4af37; font-family: Playfair Display, serif;'>Explore by Mood</h3>", unsafe_allow_html=True)
-    st.markdown(
-    """
-    <div class="mood-grid">
-        <div class="mood-card">Wonder</div>
-        <div class="mood-card">Curiosity</div>
-        <div class="mood-card">Adrenaline</div>
-        <div class="mood-card">Reflection</div>
-        <div class="mood-card">Sorrow</div>
-        <div class="mood-card">Hope</div>
-        <div class="mood-card">Mystery</div>
-        <div class="mood-card">Nostalgia</div>
-        <div class="mood-card">Rage</div>
-        <div class="mood-card">Escape</div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+
+    moods = ["Wonder", "Curiosity", "Adrenaline", "Reflection", "Sorrow", "Hope", "Mystery", "Nostalgia", "Rage", "Escape"]
+
+    st.markdown('<div class="home-mood-row">', unsafe_allow_html=True)
+    cols = st.columns(len(moods))
+    for i, mood in enumerate(moods):
+        with cols[i]:
+            if st.button(mood, key=f"home_mood_{mood}", use_container_width=True):
+                st.session_state.explore_mood = mood
+                st.session_state.current_page = "Explore"
+                st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
     render_philosophy()
 
@@ -1300,7 +1318,7 @@ def show_recommend(movies, similarity, api_key):
         )
     with col_btn:
         find_btn = st.button("Find My Story", type="primary", use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
  
     # Recent searches — real buttons styled as chips
     if st.session_state.recent_searches:
