@@ -371,6 +371,7 @@ def apply_premium_theme():
         .disc-search-wrap {{
             padding: 8px 48px 4px;
         }}
+
         .disc-search-label {{
             font-size: 15px;
             font-weight: 600;
@@ -383,25 +384,29 @@ def apply_premium_theme():
  
         /* align selectbox + button in the same row, same height */
         .disc-search-wrap [data-testid="stHorizontalBlock"] {{
-            align-items: center !important;
+            align-items: stretch !important;
             gap: 12px !important;
         }}
 
         .disc-search-wrap [data-testid="stColumn"] {{
             padding: 0 !important;
         }}
+        
         .disc-search-wrap .stSelectbox {{
             margin-bottom: 0 !important;
         }}
+
         .disc-search-wrap .stSelectbox > div > div {{
             background: #0a1620;
             border: 1px solid rgba(212,175,55,0.25);
             border-radius: 6px;
-            min-height: 46px;
+            height: 46px !important;
+            min-height: 46px !important;
             display: flex;
             align-items: center;
             color: #cdd8e0;
         }}
+
         .disc-search-wrap .stButton {{
             margin-bottom: 0 !important;
             display: flex !important;
@@ -410,7 +415,8 @@ def apply_premium_theme():
         }}
         .disc-search-wrap .stButton > button {{
             width: 100%;
-            height: 46px;
+            height: 100% !important;
+            min-height: 46px !important;
             border: 1px solid #d4af37;
             background: rgba(212,175,55,0.08);
             color: #f0d060;
@@ -938,8 +944,8 @@ def apply_premium_theme():
         }}
 
         /* ============================================================
-   GLOBAL RESPONSIVE SYSTEM
-   ============================================================ */
+        GLOBAL RESPONSIVE SYSTEM
+        ============================================================ */
 
         /* Base fluid layout */
         [data-testid="stMainBlockContainer"] {{
@@ -1125,6 +1131,8 @@ def apply_premium_theme():
                 letter-spacing: 1px !important;
             }}
         }}
+
+        
 
         </style>
         """,
